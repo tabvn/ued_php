@@ -8,6 +8,7 @@ $row = $result -> fetch_array(MYSQLI_NUM);
 printf ("%s (%s)\n", $row[0], $row[1]);
 $teachers = array();
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -17,3 +18,5 @@ $teachers = array();
 <body>
 </body>
 </html>
+
+<!--kyutyfhfhyfuul-->
