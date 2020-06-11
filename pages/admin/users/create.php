@@ -13,7 +13,10 @@ if (!empty($_POST)) {
     if ($errors == null) {
         // handle create user
         $db = Database::getConnection();
-        var_dump($db);
+        $stmt = $db->prepare("INSERT users SET name = ? WHERE id = ?");
+        $stmt->bind_param("si", $_POST['name'], $_SESSION['id']);
+        $stmt->execute();
+        $stmt->close();
     }
 }
 ?>

@@ -13,7 +13,7 @@ function path($p)
 function page()
 {
     $filename = __DIR__ . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . "home.php";
-    $p = $_GET['p'];
+    $p = !empty($_GET['p']) ? $_GET['p'] : null;
     if (!empty($p)) {
         if (strlen($p) > 0 && file_exists(__DIR__ . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . $p . ".php")) {
             $filename = __DIR__ . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . $p . ".php";
