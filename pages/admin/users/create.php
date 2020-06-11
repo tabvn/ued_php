@@ -1,6 +1,7 @@
 <?php
 $values = array('email' => "", 'password' => "");
 $errors = null;
+$message = null;
 if (!empty($_POST)) {
     $values['email'] = trim($_POST['email']);
     $values['password'] = $_POST['password'];
@@ -13,9 +14,15 @@ if (!empty($_POST)) {
     if ($errors == null) {
         // handle create user
         $db = Database::getConnection();
-        $stmt = $db->prepare("INSERT users SET name = ? WHERE id = ?");
-        $stmt->bind_param("si", $_POST['name'], $_SESSION['id']);
-        $stmt->execute();
+        $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
+        $stmt->bind_param("si", $values['email'], md5($values['password']));
+        if (!$stmt->execute()) {
+            if (endsWith($stmt->error, "'email_UNIQUE'")) {
+                $message = array('type' => 'error', 'message' => "Địa chỉ email đã tồn tại");
+            }
+        } else {
+            $message = array('type' => 'success', 'message' => "Tạo tài khoản " . $values['email'] . " thành công!");
+        }
         $stmt->close();
     }
 }
@@ -29,6 +36,14 @@ if (!empty($_POST)) {
                         <div class="card-header-title">Tạo tài khoản sinh viên</div>
                     </div>
                     <div class="card-content">
+                        <?php if (!empty($message)): ?>
+                            <article
+                                    class="message <?php print $message['type'] == 'error' ? 'is-danger' : 'is-success' ?>">
+                                <div class="message-body">
+                                    <?php print $message['message']; ?>
+                                </div>
+                            </article>
+                        <?php endif; ?>
                         <form method="post" action="<?php print path('/index.php?p=admin/users/create'); ?>">
                             <div class="field">
                                 <label class="label">Email</label>
@@ -46,7 +61,7 @@ if (!empty($_POST)) {
                                 <label class="label">Mật khẩu</label>
                                 <div class="control has-icons-left has-icons-right">
                                     <input name="password"
-                                           class="input <?php print !empty($errors['password'] )? 'is-danger' : ''; ?>"
+                                           class="input <?php print !empty($errors['password']) ? 'is-danger' : ''; ?>"
                                            type="password" placeholder="Mật khẩu"
                                            value="<?php print $values['password'] ?>"
                                     >
