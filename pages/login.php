@@ -14,15 +14,27 @@ if (!empty($_POST)) {
     if ($errors == null) {
         // handle create user
         $db = Database::getConnection();
-        $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
+        $stmt = $db->prepare("SELECT id, email, password,role FROM users where email =? AND password =?");
         $stmt->bind_param("ss", $values['email'], md5($values['password']));
         if (!$stmt->execute()) {
-            if (endsWith($stmt->error, "'email_UNIQUE'")) {
-                $message = array('type' => 'error', 'message' => "Địa chỉ email đã tồn tại");
-            }
+            $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
         } else {
-            var_dump($db->insert_id);
-            $message = array('type' => 'success', 'message' => "Tạo tài khoản " . $values['email'] . " thành công!");
+            $stmt->store_result();
+            if ($stmt->num_rows > 0) {
+                $id = null;
+                $email = null;
+                $password = null;
+                $role = null;
+                $stmt->bind_result($id, $email, $password, $role);
+                $result = $stmt->get_result();
+                $stmt->fetch();
+                var_dump(array($id, $email, $password, $role));
+                $message = array('type' => 'success', 'message' => 'Đăng nhập thành công!');
+                // login success
+                // create session
+            } else {
+                $message = array('type' => 'error', "message" => 'Email hoặc mật khẩu không chính xác!');
+            }
         }
         $stmt->close();
     }
@@ -34,7 +46,7 @@ if (!empty($_POST)) {
             <div class="column is-half">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-header-title">Tạo tài khoản sinh viên</div>
+                        <div class="card-header-title">Đăng nhập tài khoản</div>
                     </div>
                     <div class="card-content">
                         <?php if (!empty($message)): ?>
@@ -45,7 +57,7 @@ if (!empty($_POST)) {
                                 </div>
                             </article>
                         <?php endif; ?>
-                        <form method="post" action="<?php print path('/index.php?p=admin/users/create'); ?>">
+                        <form method="post" action="<?php print path('/index.php?p=login'); ?>">
                             <div class="field">
                                 <label class="label">Email</label>
                                 <div class="control has-icons-left has-icons-right">
@@ -73,7 +85,7 @@ if (!empty($_POST)) {
                             </div>
                             <div class="field">
                                 <div class="control">
-                                    <button type="submit" class="button is-link">Tạo tài khoản</button>
+                                    <button type="submit" class="button is-link">Đăng nhập</button>
                                 </div>
                             </div>
                         </form>

@@ -38,7 +38,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "functions.php";
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-light">
+                        <a class="button is-light" href="<?php print path("/?p=login")?>">
                             Đăng Nhập
                         </a>
                     </div>
