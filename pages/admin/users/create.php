@@ -1,7 +1,7 @@
 <?php
 $values = array('email' => "", 'password' => "");
 $errors = null;
-if (isset($_POST)) {
+if (!empty($_POST)) {
     $values['email'] = trim($_POST['email']);
     $values['password'] = $_POST['password'];
     if (empty($values['email'])) {
@@ -31,7 +31,7 @@ if (isset($_POST)) {
                                 <label class="label">Email</label>
                                 <div class="control has-icons-left has-icons-right">
                                     <input name="email"
-                                           class="input <?php print $errors['email'] ? "is-danger" : ""; ?>"
+                                           class="input <?php print !empty($errors['email']) ? "is-danger" : ""; ?>"
                                            type="email" placeholder="Địa chỉ email"
                                            value="<?php print $values['email'] ?>">
                                     <?php if (!empty($errors['email'])): ?>
@@ -43,7 +43,7 @@ if (isset($_POST)) {
                                 <label class="label">Mật khẩu</label>
                                 <div class="control has-icons-left has-icons-right">
                                     <input name="password"
-                                           class="input <?php print $errors['password'] ? 'is-danger' : ''; ?>"
+                                           class="input <?php print !empty($errors['password'] )? 'is-danger' : ''; ?>"
                                            type="password" placeholder="Mật khẩu"
                                            value="<?php print $values['password'] ?>"
                                     >
