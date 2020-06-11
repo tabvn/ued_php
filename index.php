@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . DIRECTORY_SEPARATOR . "database.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "functions.php";
+$user = getCurrentUser();
 ?>
 <!doctype html>
 <html lang="en">
@@ -37,10 +38,21 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "functions.php";
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
+                    <?php if (!empty($user)): ?>
+                        <span class="user-email">
+                            <?php print $user['email']; ?>
+                        </span>
+                    <?php endif; ?>
                     <div class="buttons">
-                        <a class="button is-light" href="<?php print path("/?p=login")?>">
-                            Đăng Nhập
-                        </a>
+                        <?php if (empty($user)): ?>
+                            <a class="button is-light" href="<?php print path("/?p=login") ?>">
+                                Đăng Nhập
+                            </a>
+                        <?php else: ?>
+                            <a class="button is-light" href="<?php print path("/?p=logout") ?>">
+                                Thoát
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

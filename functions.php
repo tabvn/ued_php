@@ -1,6 +1,15 @@
 <?php
 $base_path = "/ued/";
-
+if (!empty($_GET['p'])) {
+    if ($_GET['p'] == 'logout') {
+        session_start();
+        session_unset();
+        session_destroy();
+        header('Location: ' . $base_path);
+        exit();
+    }
+}
+session_start();
 function path($p)
 {
     global $base_path;
@@ -38,4 +47,12 @@ function endsWith($haystack, $needle)
     }
 
     return (substr($haystack, -$length) === $needle);
+}
+
+function getCurrentUser()
+{
+    if (empty($_SESSION['user'])) {
+        return null;
+    }
+    return $_SESSION['user'];
 }

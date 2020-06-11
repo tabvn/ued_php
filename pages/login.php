@@ -29,7 +29,10 @@ if (!empty($_POST)) {
                 $result = $stmt->get_result();
                 $stmt->fetch();
                 var_dump(array($id, $email, $password, $role));
+                $_SESSION['user'] = array('id' => $id, 'email' => $email, 'role' => $role);
                 $message = array('type' => 'success', 'message' => 'Đăng nhập thành công!');
+                header('Location: ' .path('/?p=home'));
+                exit();
                 // login success
                 // create session
             } else {
