@@ -1,6 +1,6 @@
 <?php
-require_once "./database.php";
-require_once "./functions.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "database.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "functions.php";
 ?>
 <!doctype html>
 <html lang="en">
@@ -39,7 +39,7 @@ require_once "./functions.php";
                 <div class="navbar-item">
                     <div class="buttons">
                         <a class="button is-light">
-                           Đăng Nhập
+                            Đăng Nhập
                         </a>
                     </div>
                 </div>
@@ -48,6 +48,6 @@ require_once "./functions.php";
     </div>
 </nav>
 <?php
-renderPage();
+page();
 ?>
 </body>

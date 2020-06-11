@@ -10,15 +10,15 @@ function path($p)
     return $base_path . $p;
 }
 
-function renderPage()
+function page()
 {
-    $filename = __DIR__ . "/pages/home.php";
+    $filename = __DIR__ . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . "home.php";
     $p = $_GET['p'];
-    if (isset($p)) {
-        if (strlen($p) > 0 && file_exists(__DIR__ . "/pages/" . $p . ".php")) {
-            $filename = __DIR__ . "/pages/" . $p . ".php";
+    if (!empty($p)) {
+        if (strlen($p) > 0 && file_exists(__DIR__ . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . $p . ".php")) {
+            $filename = __DIR__ . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . $p . ".php";
         } else {
-            $filename = __DIR__ . "/pages/notfound.php";
+            $filename = __DIR__ . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . "notfound.php";
         }
     }
     require_once $filename;
