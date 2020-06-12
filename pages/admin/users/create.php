@@ -1,5 +1,6 @@
 <?php
-$values = array('email' => "", 'password' => "");
+
+$values = array('ho' => "" , 'ma_sinh_vien'=>"" , 'ngay_sinh'=>"" ,'lop'=>"",'email' => "", 'password' => "" , 'ten' => "" );
 $errors = null;
 $message = null;
 
@@ -18,10 +19,42 @@ function createStudent($userId, $values)
 if (!empty($_POST)) {
     $values['email'] = trim($_POST['email']);
     $values['password'] = $_POST['password'];
-    $values['ho'] = $_POST['ho'];
-    $values['ten'] = $_POST['ten'];
+    $values['lop'] = $_POST['lop'];
     $values['ma_sinh_vien'] = $_POST['ma_sinh_vien'];
     $values['ngay_sinh'] = $_POST['ngay_sinh'];
+    $values['ho'] = $_POST['ho'];
+    $values['ten'] = $_POST['ten'];
+
+
+
+
+
+    if (empty($values['email'])) {
+        $errors['email'] = "Địa chỉ email là bắt buộc";
+    }
+    if (empty($values['password'])) {
+        $errors['password'] = "Mật khẩu là bắt buộc";
+    }
+    if (empty($values['lop'])) {
+        $errors['lop'] = "Lớp là bắt buộc";
+    }
+
+    if (empty($values['ngay_sinh'])) {
+        $errors['ngay_sinh'] = 'Ngày sinh là bắt buộc';
+    }
+
+    if (empty($values['ma_sinh_vien'])) {
+        $errors['ma_sinh_vien'] = 'Mã sinh viên là bắt buộc';
+    }
+
+
+    if (empty($values['ho'])) {
+        $errors['ho'] = 'Bạn phải nhập vào Họ';
+    }
+    if (empty($values['ten'])) {
+        $errors['ten'] = 'Bạn phải nhập vào Họ';
+    }
+
     if(!empty($values['ngay_sinh'])){
         //25/10/1987
         //1987-10-25
@@ -32,21 +65,13 @@ if (!empty($_POST)) {
         $ns = $split[2] . "-" . $split[1] . '-' .$split[0];
         $values['ngay_sinh']= $ns;
     }
-    $values['lop'] = $_POST['lop'];
-    if (empty($values['email'])) {
-        $errors['email'] = "Địa chỉ email là bắt buộc";
-    }
-    if (empty($values['password'])) {
-        $errors['password'] = "Mật khẩu là bắt buộc";
-    }
-    if (empty($values['lop'])) {
-        $errors['lop'] = 'Lớp là bắt buộc';
-    }
+
+
     if ($errors == null) {
         // handle create user
         $db = Database::getConnection();
         $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
-        $stmt->bind_param("ss", $values['email'], md5($values['password']));
+        $stmt->bind_param("ss", $values['email'], $values['password']);
         if (!$stmt->execute()) {
             if (endsWith($stmt->error, "'email_UNIQUE'")) {
                 $message = array('type' => 'error', 'message' => "Địa chỉ email đã tồn tại");
@@ -89,11 +114,13 @@ if (!empty($_POST)) {
                                     <input name="email"
                                            class="input <?php print !empty($errors['email']) ? "is-danger" : ""; ?>"
                                            type="email" placeholder="Địa chỉ email"
-                                           value="<?php print $values['email'] ?>">
+                                           value="<?php print $values['email'] ?>"
+                                    >
                                     <?php if (!empty($errors['email'])): ?>
                                         <p class="help is-danger"><?php print $errors['email']; ?></p>
                                     <?php endif; ?>
                                 </div>
+
                             </div>
                             <div class="field">
                                 <label class="label">Mật khẩu</label>
@@ -108,53 +135,91 @@ if (!empty($_POST)) {
                                     <?php endif; ?>
                                 </div>
                             </div>
+
                             <div class="field">
                                 <label class="label">Họ</label>
                                 <div class="control">
-                                    <input value="<?php print $values['ho'];?>" name="ho" class="input" type="text" placeholder="Họ">
+                                    <input value="<?php print $values['ho'];?>"
+                                           name="ho" class="input"
+                                           type="text" placeholder="Họ"
+                                    >
+                                    <?php if (!empty($errors['ho'])): ?>
+                                        <p class="help is-danger"><?php print $errors['ho']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
+
+                            </div>
+
                             <div class="field">
                                 <label class="label">Tên</label>
                                 <div class="control">
-                                    <input value="<?php print $values['ten'];?>" name="ten" class="input" type="text" placeholder="Tên">
+                                    <input value="<?php print $values['ten'];?>"
+                                           name="ten" class="input"
+                                           type="text" placeholder="Tên"
+                                    >
+                                    <?php if (!empty($errors['ten'])): ?>
+                                        <p class="help is-danger"><?php print $errors['ten']; ?></p>
+                                    <?php endif; ?>
+
                                 </div>
                             </div>
+
                             <div class="field">
                                 <label class="label">Ngày sinh</label>
                                 <div class="control">
-                                    <input name="ngay_sinh" class="input" type="text" placeholder="DD/MM/YYYY">
+                                    <input value="<?php print $values['ngay_sinh'];?>"
+                                           name="ngay_sinh" class="input"
+                                           type="text" placeholder="DD/MM/YYYY"
+                                    >
                                 </div>
                                 <?php if (!empty($errors['ngay_sinh'])): ?>
                                     <p class="help is-danger"><?php print $errors['ngay_sinh']; ?></p>
                                 <?php endif; ?>
                             </div>
+
                             <div class="field">
                                 <label class="label">Mã Sinh viên</label>
                                 <div class="control">
-                                    <input name="ma_sinh_vien" class="input" type="text" placeholder="Mã sinh viên">
+                                    <input value="<?php print $values['ma_sinh_vien'];?>"
+                                           name="ma_sinh_vien" class="input"
+                                           type="text" placeholder="Mã sinh viên"
+                                    >
+                                    <?php if (!empty($errors['ma_sinh_vien'])): ?>
+                                        <p class="help is-danger"><?php print $errors['ma_sinh_vien']; ?></p>
+                                    <?php endif; ?>
+
                                 </div>
                             </div>
+
                             <div class="field">
                                 <label class="label">Lớp</label>
                                 <div class="control">
                                     <input name="lop"
                                            class="input <?php print !empty($errors['lop']) ? 'is-danger' : ''; ?>"
-                                           type="text" placeholder="Lớp">
+                                           type="text" placeholder="Lớp"
+                                           value="<?php print $values['lop'];?>"
+                                    >
                                 </div>
                                 <?php if (!empty($errors['lop'])): ?>
                                     <p class="help is-danger"><?php print $errors['lop']; ?></p>
                                 <?php endif; ?>
                             </div>
+
                             <div class="field">
                                 <div class="control">
                                     <button type="submit" class="button is-link">Tạo tài khoản</button>
                                 </div>
                             </div>
+
                         </form>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>

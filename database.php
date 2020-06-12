@@ -7,7 +7,7 @@ class Database
 
     private function __construct()
     {
-        $this->connection =  new mysqli("127.0.0.1","root","root","ued");
+        $this->connection =  new mysqli("127.0.0.1","root","","ued");
     }
 
     function __destruct()
