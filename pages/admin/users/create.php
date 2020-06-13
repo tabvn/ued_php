@@ -70,6 +70,10 @@ if (!empty($_POST)) {
             $error = createStudent($db->insert_id, $values);
             if (!empty($error)) {
                 $message = array('type' => 'error', 'message' => "Có lỗi xảy ra:" . $error);
+                if (endsWith($error, "'ma_sinh_vien_UNIQUE'")) {
+                    $message = array('type' => 'error', 'message' => 'Mã sinh viên đã được sử dụng!');
+                    $errors['ma_sinh_vien'] = 'Mã sinh viên đã được sử dụng!';
+                }
                 $db->rollback();
             } else {
                 $message = array('type' => 'success', 'message' => "Tạo tài khoản " . $values['email'] . " thành công!");
@@ -169,7 +173,7 @@ if (!empty($_POST)) {
                                 <label class="label">Mã Sinh viên</label>
                                 <div class="control">
                                     <input value="<?php print $values['ma_sinh_vien']; ?>"
-                                           name="ma_sinh_vien" class="input"
+                                           name="ma_sinh_vien" class="input <?php print !empty($errors['ma_sinh_vien']) ? 'is-danger' : ''; ?>"
                                            type="text" placeholder="Mã sinh viên"
                                     >
                                     <?php if (!empty($errors['ma_sinh_vien'])): ?>
