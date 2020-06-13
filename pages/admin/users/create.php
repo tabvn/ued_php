@@ -22,15 +22,15 @@ if (!empty($_POST)) {
     $values['ten'] = $_POST['ten'];
     $values['ma_sinh_vien'] = $_POST['ma_sinh_vien'];
     $values['ngay_sinh'] = $_POST['ngay_sinh'];
-    if(!empty($values['ngay_sinh'])){
+    if (!empty($values['ngay_sinh'])) {
         //25/10/1987
         //1987-10-25
         $split = explode("/", $values['ngay_sinh']);
-        if(count($split) < 3){
+        if (count($split) < 3) {
             $errors['ngay_sinh'] = 'Ngày sinh không đúng!';
         }
-        $ns = $split[2] . "-" . $split[1] . '-' .$split[0];
-        $values['ngay_sinh']= $ns;
+        $ns = $split[2] . "-" . $split[1] . '-' . $split[0];
+        $values['ngay_sinh'] = $ns;
     }
     $values['lop'] = $_POST['lop'];
     if (empty($values['email'])) {
@@ -45,6 +45,7 @@ if (!empty($_POST)) {
     if ($errors == null) {
         // handle create user
         $db = Database::getConnection();
+        $db->autocommit(FALSE);
         $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
         $stmt->bind_param("ss", $values['email'], md5($values['password']));
         if (!$stmt->execute()) {
@@ -57,11 +58,13 @@ if (!empty($_POST)) {
             $error = createStudent($db->insert_id, $values);
             if (!empty($error)) {
                 $message = array('type' => 'error', 'message' => "Có lỗi xảy ra:" . $error);
-            }else{
+                $db->rollback();
+            } else {
                 $message = array('type' => 'success', 'message' => "Tạo tài khoản " . $values['email'] . " thành công!");
             }
         }
         $stmt->close();
+        $db->autocommit(TRUE);
     }
 }
 ?>
@@ -111,13 +114,15 @@ if (!empty($_POST)) {
                             <div class="field">
                                 <label class="label">Họ</label>
                                 <div class="control">
-                                    <input value="<?php print $values['ho'];?>" name="ho" class="input" type="text" placeholder="Họ">
+                                    <input value="<?php print $values['ho']; ?>" name="ho" class="input" type="text"
+                                           placeholder="Họ">
                                 </div>
                             </div>
                             <div class="field">
                                 <label class="label">Tên</label>
                                 <div class="control">
-                                    <input value="<?php print $values['ten'];?>" name="ten" class="input" type="text" placeholder="Tên">
+                                    <input value="<?php print $values['ten']; ?>" name="ten" class="input" type="text"
+                                           placeholder="Tên">
                                 </div>
                             </div>
                             <div class="field">
