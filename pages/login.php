@@ -8,6 +8,9 @@ if (!empty($_POST)) {
     if (empty($values['email'])) {
         $errors['email'] = "Địa chỉ email là bắt buộc";
     }
+    if (!filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "Địa chỉ email không hợp lệ";
+    }
     if (empty($values['password'])) {
         $errors['password'] = "Mật khẩu là bắt buộc";
     }

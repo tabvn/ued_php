@@ -1,5 +1,13 @@
 <?php
-$values = array('ho' => "", 'ma_sinh_vien' => "", 'ngay_sinh' => "", 'lop' => "", 'email' => "", 'password' => "", 'ten' => "");
+$values = array(
+    'ho' => '',
+    'ma_sinh_vien' => '',
+    'ngay_sinh' => "",
+    'lop' => "",
+    'email' => "",
+    'password' => "",
+    'ten' => "",
+);
 $errors = null;
 $message = null;
 
@@ -25,6 +33,9 @@ if (!empty($_POST)) {
     $values['ten'] = $_POST['ten'];
     if (empty($values['email'])) {
         $errors['email'] = "Địa chỉ email là bắt buộc";
+    }
+    if (!filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "Địa chỉ email không hợp lệ";
     }
     if (empty($values['password'])) {
         $errors['password'] = "Mật khẩu là bắt buộc";
@@ -57,13 +68,15 @@ if (!empty($_POST)) {
     }
     if ($errors == null) {
         // handle create user
+        $hash = md5($values['password']);
         $db = Database::getConnection();
         $db->begin_transaction();
         $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
-        $stmt->bind_param("ss", $values['email'], md5($values['password']));
+        $stmt->bind_param("ss", $values['email'], $hash);
         if (!$stmt->execute()) {
             if (endsWith($stmt->error, "'email_UNIQUE'")) {
                 $message = array('type' => 'error', 'message' => "Địa chỉ email đã tồn tại");
+                $errors['email'] = 'Địa chỉ email đã tồn tại';
             }
         } else {
             // tao vao bang sinh vien
@@ -123,7 +136,7 @@ require_once "header.php";
                                     <input name="password"
                                            class="input <?php print !empty($errors['password']) ? 'is-danger' : ''; ?>"
                                            type="password" placeholder="Mật khẩu"
-                                           value="<?php print $_POST['password'] ? $_POST['password'] : ""; ?>"
+                                           value="<?php print !empty($_POST['password']) ? $_POST['password'] : ""; ?>"
                                     >
                                     <?php if (!empty($errors['password'])): ?>
                                         <p class="help is-danger"><?php print $errors['password']; ?></p>
@@ -160,7 +173,7 @@ require_once "header.php";
                             <div class="field">
                                 <label class="label">Ngày sinh</label>
                                 <div class="control">
-                                    <input value="<?php print $_POST['ngay_sinh'] ? $_POST['ngay_sinh'] : ""; ?>"
+                                    <input value="<?php print !empty($_POST['ngay_sinh']) ? $_POST['ngay_sinh'] : ""; ?>"
                                            name="ngay_sinh" class="input"
                                            type="text" placeholder="DD/MM/YYYY"
                                     >
