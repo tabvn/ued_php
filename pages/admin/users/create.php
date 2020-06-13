@@ -60,7 +60,7 @@ if (!empty($_POST)) {
         $db = Database::getConnection();
         $db->begin_transaction();
         $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
-        $stmt->bind_param("ss", $values['email'], password_hash($values['password'], PASSWORD_DEFAULT));
+        $stmt->bind_param("ss", $values['email'], md5($values['password']));
         if (!$stmt->execute()) {
             if (endsWith($stmt->error, "'email_UNIQUE'")) {
                 $message = array('type' => 'error', 'message' => "Địa chỉ email đã tồn tại");
@@ -173,7 +173,8 @@ if (!empty($_POST)) {
                                 <label class="label">Mã Sinh viên</label>
                                 <div class="control">
                                     <input value="<?php print $values['ma_sinh_vien']; ?>"
-                                           name="ma_sinh_vien" class="input <?php print !empty($errors['ma_sinh_vien']) ? 'is-danger' : ''; ?>"
+                                           name="ma_sinh_vien"
+                                           class="input <?php print !empty($errors['ma_sinh_vien']) ? 'is-danger' : ''; ?>"
                                            type="text" placeholder="Mã sinh viên"
                                     >
                                     <?php if (!empty($errors['ma_sinh_vien'])): ?>
