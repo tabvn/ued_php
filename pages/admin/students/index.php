@@ -27,7 +27,14 @@ if (!$stmt->execute()) {
         );
         if ($stmt->num_rows > 0) {
             while ($stmt->fetch()) {
-                $students[] = $result;
+                $students[] = array(
+                    'email' => $result['email'],
+                    'ma_sinh_vien' => $result['ma_sinh_vien'],
+                    'ten' => $result['ten'],
+                    'ho' => $result['ho'],
+                    'ngay_sinh' => $result['ngay_sinh'],
+                    'lop' => $result['lop'],
+                );
             }
         }
     } else {
