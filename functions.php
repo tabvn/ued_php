@@ -1,14 +1,5 @@
 <?php
 $base_path = "/ued/";
-if (!empty($_GET['p'])) {
-    if ($_GET['p'] == 'logout') {
-        session_start();
-        session_unset();
-        session_destroy();
-        header('Location: ' . $base_path);
-        exit();
-    }
-}
 session_start();
 function path($p)
 {
@@ -17,6 +8,20 @@ function path($p)
         return $base_path . ltrim($p, "/");
     }
     return $base_path . $p;
+}
+
+function redirect($path)
+{
+    header('Location: ' . path($path));
+    exit();
+}
+
+function logout()
+{
+    session_unset();
+    session_destroy();
+    header('Location: ' . path(""));
+    exit();
 }
 
 function page()

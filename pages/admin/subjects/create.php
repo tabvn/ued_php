@@ -1,3 +1,4 @@
+<?php require_once "header.php";?>
 <div id="content">
     <div class="container">
         <div class="card">
