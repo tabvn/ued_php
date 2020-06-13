@@ -101,9 +101,9 @@ require_once "header.php";
 <div id="content">
     <div class="container">
         <div class="columns">
-            <?php require_once "admin_menu.php";?>
+            <?php require_once "admin_menu.php"; ?>
             <div class="column is-9">
-                <div class="columns is-mobile is-centered">
+                <div class="columns">
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
@@ -118,7 +118,7 @@ require_once "header.php";
                                         </div>
                                     </article>
                                 <?php endif; ?>
-                                <form method="post" action="<?php print path('/index.php?p=admin/users/create'); ?>">
+                                <form method="post" action="<?php print path('/index.php?p=admin/students/create'); ?>">
                                     <div class="field">
                                         <label class="label">Email</label>
                                         <div class="control">
@@ -207,8 +207,7 @@ require_once "header.php";
                                             <input name="lop"
                                                    class="input <?php print !empty($errors['lop']) ? 'is-danger' : ''; ?>"
                                                    type="text" placeholder="Lớp"
-                                                   value="<?php print $values['lop']; ?>"
-                                            >
+                                                   value="<?php print $values['lop']; ?>">
                                         </div>
                                         <?php if (!empty($errors['lop'])): ?>
                                             <p class="help is-danger"><?php print $errors['lop']; ?></p>
