@@ -8,7 +8,7 @@ if (!empty($_POST)) {
     if (empty($values['email'])) {
         $errors['email'] = "Địa chỉ email là bắt buộc";
     }
-    if (!filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
+    if (!empty($email) && !filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "Địa chỉ email không hợp lệ";
     }
     if (empty($values['password'])) {
@@ -63,7 +63,7 @@ require_once "header.php"
                                 </div>
                             </article>
                         <?php endif; ?>
-                        <form method="post" action="<?php print path('/index.php?p=login'); ?>">
+                        <form method="post" action="<?php print path('?p=login'); ?>">
                             <div class="field">
                                 <label class="label">Email</label>
                                 <div class="control">
