@@ -14,7 +14,7 @@ $message = null;
 function createStudent($userId, $values)
 {
     $db = Database::getConnection();
-    $stmt = $db->prepare("INSERT sinh_vien SET ma_sinh_vien = ?, ten =?, ho =?, ngay_sinh=?, lop=?,user_id=?");
+    $stmt = $db->prepare("INSERT INTO sinh_vien (ma_sinh_vien, ten, ho, ngay_sinh, lop, user_id) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sssssi", $values['ma_sinh_vien'], $values['ten'], $values['ho'], $values['ngay_sinh'], $values['lop'], $userId);
     if (!$stmt->execute()) {
         return $stmt->error;
@@ -71,7 +71,7 @@ if (!empty($_POST)) {
         $hash = md5($values['password']);
         $db = Database::getConnection();
         $db->begin_transaction();
-        $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
+        $stmt = $db->prepare("INSERT INTO users (email, password, role) VALUES (?,?,'student')");
         $stmt->bind_param("ss", $values['email'], $hash);
         if (!$stmt->execute()) {
             if (endsWith($stmt->error, "'email_UNIQUE'")) {
