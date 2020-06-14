@@ -10,7 +10,7 @@ $message = null;
 function createTeacher($values)
 {
     $db = Database::getConnection();
-    $stmt = $db->prepare("INSERT INTO giang_vien SET ho = ?, ten = ?, ngay_sinh= ?");
+    $stmt = $db->prepare("INSERT INTO giang_vien (ho, ten, ngay_sinh) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $values['ho'], $values['ten'], $values['ngay_sinh']);
     if (!$stmt->execute()) {
         return $stmt->error;
