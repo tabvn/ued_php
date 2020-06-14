@@ -71,7 +71,7 @@ if (!empty($_POST)) {
         $hash = md5($values['password']);
         $db = Database::getConnection();
         $db->begin_transaction();
-        $stmt = $db->prepare("INSERT users SET email = ?, password =?, role ='student'");
+        $stmt = $db->prepare("INSERT INTO users (email, password, role) VALUES (?,?,'student')");
         $stmt->bind_param("ss", $values['email'], $hash);
         if (!$stmt->execute()) {
             if (endsWith($stmt->error, "'email_UNIQUE'")) {

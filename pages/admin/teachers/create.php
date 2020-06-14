@@ -48,6 +48,7 @@ if (!empty($_POST)) {
             $message = array('type' => 'success', 'message' => "Thêm thành công!");
         }
     }
+    
 }
 require_once "header.php";
 ?>
