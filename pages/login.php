@@ -1,5 +1,5 @@
 <?php
-$values = array('email' => "", 'password' => "");
+$values = array('email' => "", 'password' => '');
 $errors = null;
 $message = null;
 if (!empty($_POST)) {
@@ -8,6 +8,9 @@ if (!empty($_POST)) {
     if (empty($values['email'])) {
         $errors['email'] = "Địa chỉ email là bắt buộc";
     }
+    if (!empty($email) && !filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "Địa chỉ email không hợp lệ";
+    }
     if (empty($values['password'])) {
         $errors['password'] = "Mật khẩu là bắt buộc";
     }
@@ -15,7 +18,8 @@ if (!empty($_POST)) {
         // handle create user
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT id, email, password,role FROM users where email =? AND password =?");
-        $stmt->bind_param("ss", $values['email'], md5($values['password']));
+        $hash = md5($values['password']);
+        $stmt->bind_param("ss", $values['email'], $hash);
         if (!$stmt->execute()) {
             $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
         } else {
@@ -28,11 +32,9 @@ if (!empty($_POST)) {
                 $stmt->bind_result($id, $email, $password, $role);
                 $result = $stmt->get_result();
                 $stmt->fetch();
-                var_dump(array($id, $email, $password, $role));
                 $_SESSION['user'] = array('id' => $id, 'email' => $email, 'role' => $role);
                 $message = array('type' => 'success', 'message' => 'Đăng nhập thành công!');
-                header('Location: ' .path('/?p=home'));
-                exit();
+                redirect('');
                 // login success
                 // create session
             } else {
@@ -42,6 +44,7 @@ if (!empty($_POST)) {
         $stmt->close();
     }
 }
+require_once "header.php"
 ?>
 <div id="content">
     <div class="container">
@@ -60,10 +63,10 @@ if (!empty($_POST)) {
                                 </div>
                             </article>
                         <?php endif; ?>
-                        <form method="post" action="<?php print path('/index.php?p=login'); ?>">
+                        <form method="post" action="<?php print path('?p=login'); ?>">
                             <div class="field">
                                 <label class="label">Email</label>
-                                <div class="control has-icons-left has-icons-right">
+                                <div class="control">
                                     <input name="email"
                                            class="input <?php print !empty($errors['email']) ? "is-danger" : ""; ?>"
                                            type="email" placeholder="Địa chỉ email"
@@ -75,7 +78,7 @@ if (!empty($_POST)) {
                             </div>
                             <div class="field">
                                 <label class="label">Mật khẩu</label>
-                                <div class="control has-icons-left has-icons-right">
+                                <div class="control">
                                     <input name="password"
                                            class="input <?php print !empty($errors['password']) ? 'is-danger' : ''; ?>"
                                            type="password" placeholder="Mật khẩu"
