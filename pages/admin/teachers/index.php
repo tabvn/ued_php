@@ -3,6 +3,7 @@ $teachers = array();
 $message = null;
 $db = Database::getConnection();
 $stmt = $db->prepare("SELECT id, ho, ten, ngay_sinh FROM giang_vien ORDER BY id");
+
 if (!$stmt->execute()) {
     $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
 } else {
@@ -56,7 +57,7 @@ require_once "header.php";
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Mã giảng viên</th>
+                                <th>ID</th>
                                 <th>Họ Tên</th>
                                 <th>Ngày sinh</th>
                             </tr>
