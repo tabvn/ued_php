@@ -40,11 +40,13 @@ if (!empty($_POST)) {
         $ns = $split[2] . "-" . $split[1] . '-' . $split[0];
         $values['ngay_sinh'] = $ns;
     }
-    if (!empty(createTeacher($values))) {
+    if($errors == NULL){
         $error = createTeacher($values);
-        $message = array('type' => 'error', 'message' => "Có lỗi xảy ra:" . $error);
-    } else {
-        $message = array('type' => 'success', 'message' => "Thêm thành công!");
+        if (!empty($error)) {
+            $message = array('type' => 'error', 'message' => "Có lỗi xảy ra:" . $error);
+        } else {
+            $message = array('type' => 'success', 'message' => "Thêm thành công!");
+        }
     }
 }
 require_once "header.php";
