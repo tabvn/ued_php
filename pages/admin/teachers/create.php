@@ -1,6 +1,5 @@
 <?php
 $values = array(
-    'ma_giang_vien' => '',
     'ho' => "",
     'ten' => "",
     'ngay_sinh' => "",
@@ -11,8 +10,8 @@ $message = null;
 function createTeacher($values)
 {
     $db = Database::getConnection();
-    $stmt = $db->prepare("INSERT giang_vien SET ma_giang_vien = ?, ho = ?, ten = ?, ngay_sinh= ?");
-    $stmt->bind_param("ssss", $values['ma_giang_vien'], $values['ho'], $values['ten'], $values['ngay_sinh']);
+    $stmt = $db->prepare("INSERT giang_vien SET ho = ?, ten = ?, ngay_sinh= ?");
+    $stmt->bind_param("sss", $values['ho'], $values['ten'], $values['ngay_sinh']);
     if (!$stmt->execute()) {
         return $stmt->error;
     }
@@ -21,13 +20,9 @@ function createTeacher($values)
 }
 
 if (!empty($_POST)) {
-    $values['ma_giang_vien'] = $_POST['ma_giang_vien'];
     $values['ho'] = $_POST['ho'];
     $values['ten'] = $_POST['ten'];
     $values['ngay_sinh'] = $_POST['ngay_sinh'];
-    if (empty($values['ma_giang_vien'])) {
-        $errors['ma_giang_vien'] = 'Mã giảng viên là bắt buộc';
-    }
     if (empty($values['ho'])) {
         $errors['ho'] = 'Bạn phải nhập vào Họ';
     }
@@ -74,21 +69,7 @@ require_once "header.php";
                                         </div>
                                     </article>
                                 <?php endif; ?>
-                                <form method="post" action="<?php print path('/index.php?p=admin/teacher/create'); ?>">
-                                    <div class="field">
-                                        <label class="label">Mã Giảng viên</label>
-                                        <div class="control">
-                                            <input value="<?php print $values['ma_giang_vien']; ?>"
-                                                   name="ma_giang_vien"
-                                                   class="input <?php print !empty($errors['ma_giang_vien']) ? 'is-danger' : ''; ?>"
-                                                   type="text" placeholder="Mã giảng viên"
-                                            >
-                                            <?php if (!empty($errors['ma_giang_vien'])): ?>
-                                                <p class="help is-danger"><?php print $errors['ma_giang_vien']; ?></p>
-                                            <?php endif; ?>
-
-                                        </div>
-                                    </div>
+                                <form method="post" action="<?php print path('/index.php?p=admin/teachers/create'); ?>">
 
                                     <div class="field">
                                         <label class="label">Họ</label>

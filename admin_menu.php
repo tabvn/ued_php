@@ -11,8 +11,8 @@
             Giảng viên
         </p>
         <ul class="menu-list">
-            <li><a href="<?php print path('/?p=admin/teacher'); ?>">Tất cả giảng viên</a></li>
-            <li><a href="<?php print path("/?p=admin/teacher/create"); ?>">Thêm giảng viên</a></li>
+            <li><a href="<?php print path('/?p=admin/teachers'); ?>">Tất cả giảng viên</a></li>
+            <li><a href="<?php print path("/?p=admin/teachers/create"); ?>">Thêm giảng viên</a></li>
         </ul>
         <p class="menu-label">
             Học phần
