@@ -2,7 +2,7 @@
 $students = array();
 $message = null;
 $db = Database::getConnection();
-$stmt = $db->prepare("SELECT u.email, sv.ma_sinh_vien, sv.ten, sv.ho, sv.ngay_sinh, sv.lop FROM sinh_vien as sv INNER JOIN users as u ON u.id = sv.user_id order by u.id asc LIMIT 0,10");
+$stmt = $db->prepare("SELECT u.email, sv.ma_sinh_vien, sv.ten, sv.ho, DATE_FORMAT(sv.ngay_sinh, '%d/%m/%Y'), sv.lop FROM sinh_vien as sv INNER JOIN users as u ON u.id = sv.user_id order by u.id asc LIMIT 0,10");
 //$stmt->bind_param("i", 10);
 if (!$stmt->execute()) {
     $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
@@ -37,8 +37,6 @@ if (!$stmt->execute()) {
                 );
             }
         }
-    } else {
-        $message = array('type' => 'error', "message" => 'Email hoặc mật khẩu không chính xác!');
     }
 }
 $stmt->close();
