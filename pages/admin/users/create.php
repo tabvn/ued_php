@@ -2,14 +2,45 @@
 $values = array('email' => "", 'password' => "");
 $errors = null;
 $message = null;
+
+function createStudent($userId, $values)
+{
+    $db = Database::getConnection();
+    $stmt = $db->prepare("INSERT sinh_vien SET ma_sinh_vien = ?, ten =?, ho =?, ngay_sinh=?, lop=?,user_id=?");
+    $stmt->bind_param("ssssss", $values['ma_sinh_vien'], $values['ten'], $values['ho'], $values['ngay_sinh'], $values['lop'], $userId);
+    if (!$stmt->execute()) {
+        return $stmt->error;
+    }
+    $stmt->close();
+    return null;
+}
+
 if (!empty($_POST)) {
     $values['email'] = trim($_POST['email']);
     $values['password'] = $_POST['password'];
+    $values['ho'] = $_POST['ho'];
+    $values['ten'] = $_POST['ten'];
+    $values['ma_sinh_vien'] = $_POST['ma_sinh_vien'];
+    $values['ngay_sinh'] = $_POST['ngay_sinh'];
+    if(!empty($values['ngay_sinh'])){
+        //25/10/1987
+        //1987-10-25
+        $split = explode("/", $values['ngay_sinh']);
+        if(count($split) < 3){
+            $errors['ngay_sinh'] = 'Ngày sinh không đúng!';
+        }
+        $ns = $split[2] . "-" . $split[1] . '-' .$split[0];
+        $values['ngay_sinh']= $ns;
+    }
+    $values['lop'] = $_POST['lop'];
     if (empty($values['email'])) {
         $errors['email'] = "Địa chỉ email là bắt buộc";
     }
     if (empty($values['password'])) {
         $errors['password'] = "Mật khẩu là bắt buộc";
+    }
+    if (empty($values['lop'])) {
+        $errors['lop'] = 'Lớp là bắt buộc';
     }
     if ($errors == null) {
         // handle create user
@@ -22,7 +53,13 @@ if (!empty($_POST)) {
             }
         } else {
             var_dump($db->insert_id);
-            $message = array('type' => 'success', 'message' => "Tạo tài khoản " . $values['email'] . " thành công!");
+            // tao vao bang sinh vien
+            $error = createStudent($db->insert_id, $values);
+            if (!empty($error)) {
+                $message = array('type' => 'error', 'message' => "Có lỗi xảy ra:" . $error);
+            }else{
+                $message = array('type' => 'success', 'message' => "Tạo tài khoản " . $values['email'] . " thành công!");
+            }
         }
         $stmt->close();
     }
@@ -70,6 +107,57 @@ if (!empty($_POST)) {
                                         <p class="help is-danger"><?php print $errors['password']; ?></p>
                                     <?php endif; ?>
                                 </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Họ</label>
+                                <div class="control">
+                                    <input name="ho"
+                                           class="input <?php print !empty($errors['ho']) ? 'is-danger' : ''; ?>"
+                                           type="text" placeholder="Họ">
+                                </div>
+                                <?php if (!empty($errors['ho'])): ?>
+                                    <p class="help is-danger"><?php print $errors['ho']; ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="field">
+                                <label class="label">Tên</label>
+                                <div class="control">
+                                    <input name="ten"
+                                           class="input <?php print !empty($errors['ten']) ? 'is-danger' : ''; ?>"
+                                           type="text" placeholder="Tên">
+                                </div>
+                                <?php if (!empty($errors['ten'])): ?>
+                                    <p class="help is-danger"><?php print $errors['ten']; ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="field">
+                                <label class="label">Ngày sinh</label>
+                                <div class="control">
+                                    <input name="ngay_sinh" class="input" type="text" placeholder="DD/MM/YYYY">
+                                </div>
+                                <?php if (!empty($errors['ngay_sinh'])): ?>
+                                    <p class="help is-danger"><?php print $errors['ngay_sinh']; ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="field">
+                                <label class="label">Mã Sinh viên</label>
+                                <div class="control">
+                                    <input name="ma_sinh_vien" class="input" type="text" placeholder="Mã sinh viên">
+                                </div>
+                                <?php if (!empty($errors['ma_sinh_vien'])): ?>
+                                    <p class="help is-danger"><?php print $errors['ma_sinh_vien']; ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="field">
+                                <label class="label">Lớp</label>
+                                <div class="control">
+                                    <input name="lop"
+                                           class="input <?php print !empty($errors['lop']) ? 'is-danger' : ''; ?>"
+                                           type="text" placeholder="Lớp">
+                                </div>
+                                <?php if (!empty($errors['lop'])): ?>
+                                    <p class="help is-danger"><?php print $errors['lop']; ?></p>
+                                <?php endif; ?>
                             </div>
                             <div class="field">
                                 <div class="control">
