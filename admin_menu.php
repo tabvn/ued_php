@@ -15,6 +15,13 @@
             <li><a href="<?php print path("/?p=admin/teachers/create"); ?>">Thêm giảng viên</a></li>
         </ul>
         <p class="menu-label">
+            Môn học
+        </p>
+        <ul class="menu-list">
+            <li><a href="<?php print path('/?p=admin/subjects'); ?>">Tất cả môn học</a></li>
+            <li><a href="<?php print path("/?p=admin/subjects/create"); ?>">Thêm môn học</a></li>
+        </ul>
+        <p class="menu-label">
             Học phần
         </p>
         <ul class="menu-list">
