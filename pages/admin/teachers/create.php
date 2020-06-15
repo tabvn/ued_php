@@ -115,7 +115,7 @@ require_once "header.php";
 
                                     <div class="field">
                                         <div class="control">
-                                            <button type="submit" class="button is-link">Tạo tài khoản</button>
+                                            <button type="submit" class="button is-link">Thêm giảng viên</button>
                                         </div>
                                     </div>
                                 </form>
