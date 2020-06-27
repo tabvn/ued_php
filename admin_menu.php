@@ -25,8 +25,8 @@
             Học phần
         </p>
         <ul class="menu-list">
-            <li><a>Học phần đang mở</a></li>
-            <li><a>Mở học phần mới</a></li>
+            <li><a href="<?php print path('/?p=admin/open-subjects'); ?>">Học phần đang mở</a></li>
+            <li><a href="<?php print path('/?p=admin/open-subjects/create'); ?>">Mở học phần mới</a></li>
         </ul>
         <p class="menu-label">
             Quản trị viên

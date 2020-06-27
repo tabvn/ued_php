@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/php_ued.iml" filepath="$PROJECT_DIR$/php_ued.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ued.iml" filepath="$PROJECT_DIR$/.idea/ued.iml" />
     </modules>
   </component>
 </project>

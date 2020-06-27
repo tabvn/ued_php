@@ -1,5 +1,5 @@
 <?php
-$base_path = "/ued/";
+$base_path = PATH;
 session_start();
 function path($p)
 {
