@@ -15,7 +15,7 @@ function createStudent($userId, $values)
 {
     $db = Database::getConnection();
     $stmt = $db->prepare("INSERT INTO sinh_vien (ma_sinh_vien, ten, ho, ngay_sinh, lop, user_id) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssi", $values['ma_sinh_vien'], $values['ten'], $values['ho'], $values['ngay_sinh'], $values['lop'], $userId);
+    $stmt->bind_param("sssssi", $values['ma_sinh_vien'], $values['ten'], $values['ho'], $values['ngay_sinh'], strtoupper($values['lop']), $userId);
     if (!$stmt->execute()) {
         return $stmt->error;
     }
