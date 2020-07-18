@@ -3,6 +3,8 @@ $values = array(
     'ho' => "",
     'ten' => "",
     'ngay_sinh' => "",
+    'email' => '',
+    'dien_thoai' => ''
 );
 $errors = null;
 $message = null;
@@ -10,8 +12,8 @@ $message = null;
 function createTeacher($values)
 {
     $db = Database::getConnection();
-    $stmt = $db->prepare("INSERT INTO giang_vien (ho, ten, ngay_sinh) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $values['ho'], $values['ten'], $values['ngay_sinh']);
+    $stmt = $db->prepare("INSERT INTO giang_vien (ho, ten, ngay_sinh, email, dien_thoai) VALUES (?, ?, ?, ?,?)");
+    $stmt->bind_param("sssss", $values['ho'], $values['ten'], $values['ngay_sinh'], $values['email'], $values['dien_thoai']);
     if (!$stmt->execute()) {
         return $stmt->error;
     }
@@ -23,6 +25,8 @@ if (!empty($_POST)) {
     $values['ho'] = $_POST['ho'];
     $values['ten'] = $_POST['ten'];
     $values['ngay_sinh'] = $_POST['ngay_sinh'];
+    $values['email'] = $_POST['email'];
+    $values['dien_thoai'] = $_POST['dien_thoai'];
     if (empty($values['ho'])) {
         $errors['ho'] = 'Bạn phải nhập vào Họ';
     }
@@ -111,6 +115,34 @@ require_once "header.php";
                                         <?php if (!empty($errors['ngay_sinh'])): ?>
                                             <p class="help is-danger"><?php print $errors['ngay_sinh']; ?></p>
                                         <?php endif; ?>
+                                    </div>
+
+                                    <div class="field">
+                                        <label class="label">Email</label>
+                                        <div class="control">
+                                            <input value="<?php print $values['email']; ?>"
+                                                   name="email" class="input"
+                                                   type="text" placeholder="Địa chỉ email"
+                                            >
+                                            <?php if (!empty($errors['email'])): ?>
+                                                <p class="help is-danger"><?php print $errors['email']; ?></p>
+                                            <?php endif; ?>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label class="label">Điện thoại</label>
+                                        <div class="control">
+                                            <input value="<?php print $values['dien_thoai']; ?>"
+                                                   name="dien_thoai" class="input"
+                                                   type="text" placeholder="Địa chỉ email"
+                                            >
+                                            <?php if (!empty($errors['dien_thoai'])): ?>
+                                                <p class="help is-danger"><?php print $errors['dien_thoai']; ?></p>
+                                            <?php endif; ?>
+
+                                        </div>
                                     </div>
 
                                     <div class="field">
