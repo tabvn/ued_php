@@ -26,11 +26,11 @@ $user = getCurrentUser();
         </div>
 
         <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
+           <div class="navbar-start">
+                <a class="navbar-item" href="<?php print path("/?p=index.php") ?>" >
                     Trang chủ
                 </a>
-                <a class="navbar-item">
+                <a class="navbar-item" href="<?php print path("/?p=admin/open-subjects") ?>" >
                     Đăng ký học phần
                 </a>
             </div>
