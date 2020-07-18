@@ -25,13 +25,14 @@ function getTeachers()
     return $teachers;
 }
 
-function isOverlapSubject($from, $to)
+function isOverlapSubject($thu, $from, $to)
 {
     $db = Database::getConnection();
     $from = (int) $from;
     $to = (int) $to;
+    $thu = (int) $thu;
     $result
-      = $db->query("SELECT COUNT(id) as total FROM hoc_phan WHERE ($from <= tiet_ket_thuc AND $to >= tiet_bat_dau)")
+      = $db->query("SELECT COUNT(id) as total FROM hoc_phan WHERE thu = $thu AND ($from <= tiet_ket_thuc AND $to >= tiet_bat_dau)")
       ->fetch_assoc();
     if ($result['total'] > 0) {
         return true;
