@@ -2,35 +2,14 @@
 $teachers = array();
 $message = null;
 $db = Database::getConnection();
-$stmt = $db->prepare("SELECT id, ho, ten, DATE_FORMAT(ngay_sinh, '%d/%m/%Y') FROM giang_vien ORDER BY id");
+$stmt = $db->prepare("SELECT id, ho, ten, DATE_FORMAT(ngay_sinh, '%d/%m/%Y') as ngay_sinh,email, dien_thoai FROM giang_vien ORDER BY id");
 
 if (!$stmt->execute()) {
     $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
 } else {
-    $stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $result = array(
-            'id' => NULL,
-            'ho' => NULL,
-            'ten' => NULL,
-            'ngay_sinh' => NULL,
-        );
-        $stmt->bind_result(
-            $result['id'],
-            $result['ho'],
-            $result['ten'],
-            $result['ngay_sinh']
-        );
-        if ($stmt->num_rows > 0) {
-            while ($stmt->fetch()) {
-                $teachers[] = array(
-                    'id' => $result['id'],
-                    'ho' => $result['ho'],
-                    'ten' => $result['ten'],
-                    'ngay_sinh' => $result['ngay_sinh'],
-                );
-            }
-        }
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $teachers[] = $row;
     }
 }
 $stmt->close();
@@ -60,6 +39,8 @@ require_once "header.php";
                                 <th>ID</th>
                                 <th>Họ Tên</th>
                                 <th>Ngày sinh</th>
+                                <th>Email</th>
+                                <th>Điện Thoại</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -68,6 +49,8 @@ require_once "header.php";
                                     <td><?php print $teacher['id'] ?></td>
                                     <td><?php print $teacher['ho'] . " " . $teacher['ten'] ?></td>
                                     <td><?php print $teacher['ngay_sinh'] ?></td>
+                                    <td><?php print $teacher['email'] ?></td>
+                                    <td><?php print $teacher['dien_thoai'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>
