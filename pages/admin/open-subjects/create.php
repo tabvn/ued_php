@@ -72,8 +72,8 @@ function isOverlapSubject($thu, $from, $to)
 function createOpenSubject($giangvienId, $monhocId, $values)
 {
     $db = Database::getConnection();
-  $stmt = $db->prepare("INSERT INTO hoc_phan (id, ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id,) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-  $stmt->bind_param("issiisiiii", $values['id'], $values['ten_hoc_phan'], $values['ma_hoc_phan'], $values['so_tin_chi'], $values['so_luong_toi_da'], $values['thu'], $values['tiet_bat_dau'], $values['tiet_ket_thuc'], $giangvienId, $monhocId);
+  $stmt = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id,) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("ssiisiiii", $values['ten_hoc_phan'], $values['ma_hoc_phan'], $values['so_tin_chi'], $values['so_luong_toi_da'], $values['thu'], $values['tiet_bat_dau'], $values['tiet_ket_thuc'], $giangvienId, $monhocId);
 
     if (!$stmt->execute()) {
     return $stmt->error;
