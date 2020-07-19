@@ -9,8 +9,8 @@ $message = null;
 function createSubject($values)
 {
     $db = Database::getConnection();
-    $stmt = $db->prepare("INSERT INTO mon_hoc (id, ten_mon_hoc) VALUES (?, ?)");
-    $stmt->bind_param("is", $values['id'], $values['ten_mon_hoc']);
+    $stmt = $db->prepare("INSERT INTO mon_hoc (ten_mon_hoc) VALUES (?)");
+    $stmt->bind_param("s",$values['ten_mon_hoc']);
     if (!$stmt->execute()) {
         return $stmt->error;
     }
@@ -19,13 +19,9 @@ function createSubject($values)
 }
 
 if (!empty($_POST)) {
-    $values['id'] = $_POST['id'];
     $values['ten_mon_hoc'] = $_POST['ten_mon_hoc'];
-    if (empty($values['id'])) {
-        $errors['id'] = 'Bạn phải nhập vào Mã môn học';
-    }
     if (empty($values['ten_mon_hoc'])) {
-        $errors['ten_mon_hoc'] = 'Bạn phải nhập vào Tên môn học';
+        $errors['ten_mon_hoc'] = 'Bạn phải nhập vào tên môn học';
     }
     if($errors == NULL){
         $error = createSubject($values);
@@ -60,18 +56,6 @@ require_once "header.php";
                                     </article>
                                 <?php endif; ?>
                                 <form method="post" action="<?php print path('/index.php?p=admin/subjects/create'); ?>">
-                                    <div class="field">
-                                        <label class="label">Mã môn học</label>
-                                        <div class="control">
-                                            <input value="<?php print $values['id']; ?>"
-                                                   name="id" class="input"
-                                                   type="text" placeholder="Mã môn học"
-                                            >
-                                            <?php if (!empty($errors['id'])): ?>
-                                                <p class="help is-danger"><?php print $errors['id']; ?></p>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
                                     <div class="field">
                                         <label class="label">Tên môn học</label>
                                         <div class="control">
