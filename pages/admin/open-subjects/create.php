@@ -1,14 +1,14 @@
 <?php
 
 $values = array(
-  'id'              => '',
-  'ten_hoc_phan'    => '',
-  'ma_hoc_phan'     => "",
-  'so_tin_chi'      => "",
-  'so_luong_toi_da' => "",
-  'thu'             => "",
-  'tiet_bat_dau'    => "",
-  'tiet_ket_thuc'   => "",
+    'id'              => '',
+    'ten_hoc_phan'    => '',
+    'ma_hoc_phan'     => "",
+    'so_tin_chi'      => "",
+    'so_luong_toi_da' => "",
+    'thu'             => "",
+    'tiet_bat_dau'    => "",
+    'tiet_ket_thuc'   => "",
 );
 $errors = array();
 $message = array();
@@ -19,7 +19,7 @@ function getTeachers()
     $stmt = $db->prepare("SELECT id,ho,ten FROM giang_vien");
     if ( ! $stmt->execute()) {
         $message = array(
-          'type' => 'error', 'message' => htmlspecialchars($stmt->error),
+            'type' => 'error', 'message' => htmlspecialchars($stmt->error),
         );
     } else {
         $result = $stmt->get_result();
@@ -39,7 +39,7 @@ function getSubjects()
     $stmt = $db->prepare("SELECT id,ten_mon_hoc FROM mon_hoc");
     if ( ! $stmt->execute()) {
         $message = array(
-          'type' => 'error', 'message' => htmlspecialchars($stmt->error),
+            'type' => 'error', 'message' => htmlspecialchars($stmt->error),
         );
     } else {
         $result = $stmt->get_result();
@@ -59,8 +59,8 @@ function isOverlapSubject($thu, $from, $to)
     $to = (int) $to;
     $thu = (int) $thu;
     $result
-      = $db->query("SELECT COUNT(id) as total FROM hoc_phan WHERE thu = $thu AND ($from <= tiet_ket_thuc AND $to >= tiet_bat_dau)")
-      ->fetch_assoc();
+        = $db->query("SELECT COUNT(id) as total FROM hoc_phan WHERE thu = $thu AND ($from <= tiet_ket_thuc AND $to >= tiet_bat_dau)")
+        ->fetch_assoc();
     if ($result['total'] > 0) {
         return true;
     }
@@ -78,17 +78,17 @@ function createOpenSubject($values)
     $values['so_luong_toi_da'] = (int) $values['so_luong_toi_da'];
     $db = Database::getConnection();
     $stmt
-      = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssiisiiii",
-      $values['ten_hoc_phan'],
-      $values['ma_hoc_phan'],
-      $values['so_tin_chi'],
-      $values['so_luong_toi_da'],
-      $values['thu'],
-      $values['tiet_bat_dau'],
-      $values['tiet_ket_thuc'],
-      $values['giang_vien_id'],
-      $values['mon_hoc_id']);
+        $values['ten_hoc_phan'],
+        $values['ma_hoc_phan'],
+        $values['so_tin_chi'],
+        $values['so_luong_toi_da'],
+        $values['thu'],
+        $values['tiet_bat_dau'],
+        $values['tiet_ket_thuc'],
+        $values['giang_vien_id'],
+        $values['mon_hoc_id']);
     if ( ! $stmt->execute()) {
         return $stmt->error;
     }
@@ -129,11 +129,11 @@ if ( ! empty($_POST)) {
         $error = createOpenSubject($values);
         if ( ! empty($error)) {
             $message = array(
-              'type' => 'error', 'message' => "Có lỗi xảy ra:".$error,
+                'type' => 'error', 'message' => "Có lỗi xảy ra:".$error,
             );
         } else {
             $message = array(
-              'type' => 'success', 'message' => "Thêm thành công!",
+                'type' => 'success', 'message' => "Thêm thành công!",
             );
         }
     }
@@ -175,8 +175,8 @@ function input($options, $error)
     $html .= "<label class=\"label\">".$options['label']."</label>";
     $html .= "<div class=\"control\">";
     $html .= '<input value="'.$options['value'].'" class="'.$class.'" type="'
-      .$options['type'].'" name="'.$options['name'].'" placeholder="'
-      .$options['placeholder'].'" />';
+        .$options['type'].'" name="'.$options['name'].'" placeholder="'
+        .$options['placeholder'].'" />';
     if ( ! empty($error)) {
         $html .= '<p class="help is-danger">'.$error.'</p>';
     }
@@ -206,9 +206,9 @@ $subjects = getSubjects()
                                 <?php
                                 if ( ! empty($message)): ?>
                                     <article
-                                            class="message <?php
-                                            print $message['type'] == 'error'
-                                              ? 'is-danger' : 'is-success' ?>">
+                                        class="message <?php
+                                        print $message['type'] == 'error'
+                                            ? 'is-danger' : 'is-success' ?>">
                                         <div class="message-body">
                                             <?php
                                             print $message['message']; ?>
@@ -221,28 +221,28 @@ $subjects = getSubjects()
                                       print path('/index.php?p=admin/open-subjects/create'); ?>">
                                     <?php
                                     print input(array(
-                                      'label' => 'Tên học phần',
-                                      'name'  => 'ten_hoc_phan',
-                                      'value' => $values['ten_hoc_phan'],
+                                        'label' => 'Tên học phần',
+                                        'name'  => 'ten_hoc_phan',
+                                        'value' => $values['ten_hoc_phan'],
                                     ), ! empty($errors['ten_hoc_phan'])
-                                      ? $errors['ten_hoc_phan'] : null);
+                                        ? $errors['ten_hoc_phan'] : null);
                                     ?>
                                     <?php
                                     print input(array(
-                                      'label' => 'Mã học phần',
-                                      'name'  => 'ma_hoc_phan',
-                                      'value' => $values['ma_hoc_phan'],
+                                        'label' => 'Mã học phần',
+                                        'name'  => 'ma_hoc_phan',
+                                        'value' => $values['ma_hoc_phan'],
                                     ), ! empty($errors['ma_hoc_phan'])
-                                      ? $errors['ma_hoc_phan'] : null);
+                                        ? $errors['ma_hoc_phan'] : null);
                                     ?>
 
                                     <?php
                                     print input(array(
-                                      'label' => 'Số tín chỉ',
-                                      'name'  => 'so_tin_chi',
-                                      'value' => $values['so_tin_chi'],
+                                        'label' => 'Số tín chỉ',
+                                        'name'  => 'so_tin_chi',
+                                        'value' => $values['so_tin_chi'],
                                     ), ! empty($errors['so_tin_chi'])
-                                      ? $errors['so_tin_chi'] : null);
+                                        ? $errors['so_tin_chi'] : null);
                                     ?>
                                     <div class="field">
                                         <label class="label">Giảng viên</label>
@@ -251,13 +251,13 @@ $subjects = getSubjects()
                                                 <select name="giang_vien_id">
                                                     <?php
                                                     foreach (
-                                                      $teachers as $teacher
+                                                        $teachers as $teacher
                                                     ): ?>
                                                         <option value="<?php
                                                         print $teacher['id']; ?>"><?php
                                                             print $teacher['ho']
-                                                              ." "
-                                                              .$teacher['ten']; ?></option>
+                                                                ." "
+                                                                .$teacher['ten']; ?></option>
                                                     <?php
                                                     endforeach; ?>
                                                 </select>
@@ -271,7 +271,7 @@ $subjects = getSubjects()
                                                 <select name="mon_hoc_id">
                                                     <?php
                                                     foreach (
-                                                      $subjects as $subject
+                                                        $subjects as $subject
                                                     ): ?>
                                                         <option value="<?php
                                                         print $subject['id']; ?>"><?php
@@ -284,11 +284,11 @@ $subjects = getSubjects()
                                     </div>
                                     <?php
                                     print input(array(
-                                      'label' => 'Số lượng tối đa',
-                                      'name'  => 'so_luong_toi_da',
-                                      'value' => $values['so_luong_toi_da'],
+                                        'label' => 'Số lượng tối đa',
+                                        'name'  => 'so_luong_toi_da',
+                                        'value' => $values['so_luong_toi_da'],
                                     ), ! empty($errors['so_luong_toi_da'])
-                                      ? $errors['so_luong_toi_da'] : null);
+                                        ? $errors['so_luong_toi_da'] : null);
                                     ?>
                                     <div class="field">
                                         <label class="label">Thứ</label>
@@ -297,26 +297,26 @@ $subjects = getSubjects()
                                                 <select name="thu">
                                                     <?php
                                                     $options = array(
-                                                      '2'  => 'Thứ 2',
-                                                      '3'  => 'Thứ 3',
-                                                      '4 ' => 'Thứ 4',
-                                                      '5'  => 'Thứ 5',
-                                                      '6'  => 'Thứ 6',
-                                                      '7'  => 'Thứ 7',
-                                                      'cn' => 'Chủ nhật',
+                                                        '2'  => 'Thứ 2',
+                                                        '3'  => 'Thứ 3',
+                                                        '4 ' => 'Thứ 4',
+                                                        '5'  => 'Thứ 5',
+                                                        '6'  => 'Thứ 6',
+                                                        '7'  => 'Thứ 7',
+                                                        'cn' => 'Chủ nhật',
                                                     )
                                                     ?>
                                                     <?php
                                                     foreach (
-                                                      $options as $k => $v
+                                                        $options as $k => $v
                                                     ) :?>
                                                         <?php
                                                         $select = '';
                                                         if ($values['thu']
-                                                          == $k
+                                                            == $k
                                                         ) {
                                                             $select
-                                                              = 'selected';
+                                                                = 'selected';
                                                         }
                                                         ?>
                                                         <option value="<?php
@@ -336,20 +336,20 @@ $subjects = getSubjects()
                                             <select name="tiet_bat_dau">
                                                 <?php
                                                 $options = array(
-                                                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                                 )
                                                 ?>
                                                 <?php
                                                 foreach (
-                                                  $options as $v
+                                                    $options as $v
                                                 ) :?>
                                                     <?php
                                                     $select = '';
                                                     if ($values['tiet_bat_dau']
-                                                      == $v
+                                                        == $v
                                                     ) {
                                                         $select
-                                                          = 'selected';
+                                                            = 'selected';
                                                     }
                                                     ?>
                                                     <option value="<?php
@@ -369,20 +369,20 @@ $subjects = getSubjects()
                                             <select name="tiet_ket_thuc">
                                                 <?php
                                                 $options = array(
-                                                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                                 )
                                                 ?>
                                                 <?php
                                                 foreach (
-                                                  $options as $v
+                                                    $options as $v
                                                 ) :?>
                                                     <?php
                                                     $select = '';
                                                     if ($values['tiet_ket_thuc']
-                                                      == $v
+                                                        == $v
                                                     ) {
                                                         $select
-                                                          = 'selected';
+                                                            = 'selected';
                                                     }
                                                     ?>
                                                     <option value="<?php

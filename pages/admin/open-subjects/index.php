@@ -54,7 +54,8 @@ require_once "header.php";
                                 <th>Số lượng tối đa</th>
                                 <th>Giảng viên</th>
                                 <th>Nhóm môn học</th>
-                                <th>Thời gian</th>
+                                <th>Thứ</th>
+                                <th>Tiết</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -77,12 +78,11 @@ require_once "header.php";
                                     <td><?php
                                         print $subject['ten_mon_hoc']; ?></td>
                                     <td><?php
-                                        print $subject['thu']; ?></td>
-                                    <td>
-                                        Thứ <?php
-                                        print $subject['thu'].', '
-                                          .$subject['tiet_bat_dau']."-"
-                                          .$subject['tiet_ket_thuc']; ?></td>
+                                        print 'Thứ '.$subject['thu'] ?> </td>
+                                    <td><?php
+                                        print 'Tiết '
+                                            .$subject['tiet_bat_dau']."-"
+                                            .$subject['tiet_ket_thuc']; ?></td>
                                 </tr>
                             <?php
                             endforeach; ?>
