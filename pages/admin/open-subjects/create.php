@@ -92,8 +92,7 @@ function createOpenSubject($values)
       $values['tiet_bat_dau'],
       $values['tiet_ket_thuc'],
       $values['giang_vien_id'],
-      $values['mon_hoc_id'],
-      $monhocId);
+      $values['mon_hoc_id']);
     if ( ! $stmt->execute()) {
         return $stmt->error;
     }
