@@ -81,10 +81,8 @@ function createOpenSubject($values)
 
     var_dump($values);
     $db = Database::getConnection();
-<<<<<<< HEAD
   $stmt = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id,) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
   $stmt->bind_param("ssiisiiii", $values['ten_hoc_phan'], $values['ma_hoc_phan'], $values['so_tin_chi'], $values['so_luong_toi_da'], $values['thu'], $values['tiet_bat_dau'], $values['tiet_ket_thuc'], $giangvienId, $monhocId);
-=======
     $stmt
       = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssiisiiii",
@@ -95,14 +93,11 @@ function createOpenSubject($values)
       $values['thu'],
       $values['tiet_bat_dau'],
       $values['tiet_ket_thuc'],
-      $values['giang_vien_id'],
-      $values['mon_hoc_id'],
-      $monhocId);
+        $values['tiet_ket_thuc']);
     if ( ! $stmt->execute()) {
         return $stmt->error;
     }
     $stmt->close();
->>>>>>> 2f9d72cb6a01c49b132d63a0ec3ae0f4c2f4f653
 
     return null;
 }
