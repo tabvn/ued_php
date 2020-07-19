@@ -51,7 +51,14 @@ require_once "header.php"; ?>
                     <tbody>
                     <?php
                     foreach ($rows as $row): ?>
-                        <tr>
+                        <?php
+                        $selected = 'not-select';
+                        if ( ! empty($row['dk_user_id'])) {
+                            $selected = 'is-selected';
+                        }
+                        ?>
+                        <tr class="<?php
+                        print $selected; ?>">
                             <td>
                                 Thứ <?php
                                 print $row['thu'].', tiết: '
@@ -76,13 +83,35 @@ require_once "header.php"; ?>
                             </td>
                             <td>
                                 <?php
-                                print $row['ten_giang_vien'] .' '. $row['ho_giang_vien']; ?>
+                                print $row['ten_giang_vien'].' '
+                                  .$row['ho_giang_vien']; ?>
                             </td>
                             <td>
-                                <form id="form-dk-<?php print $row['id']?>">
-                                    <input type="hidden" value="<?php print $row['id']?>">
-                                    <button type="submit">Đăng ký</button>
-                                </form>
+                                <?php
+                                if (empty($row['dk_user_id'])): ?>
+                                    <form method="post" action="<?php
+                                    print path('?p=subjects') ?>"
+                                          id="form-dk-<?php
+                                          print $row['id'] ?>">
+                                        <input name="dk" type="hidden"
+                                               value="<?php
+                                               print $row['id'] ?>">
+                                        <button type="submit">Đăng ký</button>
+                                    </form>
+                                <?
+                                else : ?>
+                                    <form method="post" action="<?php
+                                    print path('?p=subjects') ?>"
+                                          id="form-dk-<?php
+                                          print $row['id'] ?>">
+                                        <input name="huy_dk" type="hidden"
+                                               value="<?php
+                                               print $row['id'] ?>">
+                                        <button type="submit">Huỷ đăng ký
+                                        </button>
+                                    </form>
+                                <?php
+                                endif; ?>
                             </td>
                         </tr>
                     <?php
