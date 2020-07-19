@@ -1,5 +1,16 @@
 <?php
 
+function getUser($id)
+{
+
+}
+
+$id = $_GET['id'];
+if (empty($id)) {
+    header('Location: '.path('?p=notfound.php'));
+    exit;
+}
+$user = getUser($id);
 $values = array(
   'email'    => '',
   'password' => '',
@@ -39,7 +50,8 @@ if ( ! empty($_POST)) {
         } else {
             $message = array(
               'type'    => 'success',
-              'message' => "Tạo tài khoản quản trị ".$values['email']." thành công!",
+              'message' => "Tạo tài khoản quản trị ".$values['email']
+                ." thành công!",
             );
         }
         $stmt->close();
@@ -58,7 +70,8 @@ require_once "header.php";
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-header-title">Tạo tài khoản quản trị viên
+                                <div class="card-header-title">Cập nhật tài
+                                    khoản quản trị viên
                                 </div>
                             </div>
                             <div class="card-content">
@@ -124,7 +137,8 @@ require_once "header.php";
                                     <div class="field">
                                         <div class="control">
                                             <button type="submit"
-                                                    class="button is-link">Tạo quản trị viên
+                                                    class="button is-link">Cập
+                                                nhật
                                             </button>
                                         </div>
                                     </div>
