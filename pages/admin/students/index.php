@@ -2,41 +2,14 @@
 $students = array();
 $message = null;
 $db = Database::getConnection();
-$stmt = $db->prepare("SELECT u.email, sv.ma_sinh_vien, sv.ten, sv.ho, DATE_FORMAT(sv.ngay_sinh, '%d/%m/%Y'), sv.lop FROM sinh_vien as sv INNER JOIN users as u ON u.id = sv.user_id order by u.id asc LIMIT 0,10");
+$stmt = $db->prepare("SELECT u.id,u.email, sv.ma_sinh_vien, sv.ten, sv.ho, DATE_FORMAT(sv.ngay_sinh, '%d/%m/%Y') as ngay_sinh, sv.lop FROM sinh_vien as sv INNER JOIN users as u ON u.id = sv.user_id order by u.id asc LIMIT 0,10");
 //$stmt->bind_param("i", 10);
 if (!$stmt->execute()) {
     $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
 } else {
-    $stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $result = array(
-            'email' => NULL,
-            'ma_sinh_vien' => NULL,
-            'ten' => NULL,
-            'ho' => NULL,
-            'ngay_sinh' => NULL,
-            'lop' => NULL,
-        );
-        $stmt->bind_result(
-            $result['email'],
-            $result['ma_sinh_vien'],
-            $result['ten'],
-            $result['ho'],
-            $result['ngay_sinh'],
-            $result['lop']
-        );
-        if ($stmt->num_rows > 0) {
-            while ($stmt->fetch()) {
-                $students[] = array(
-                    'email' => $result['email'],
-                    'ma_sinh_vien' => $result['ma_sinh_vien'],
-                    'ten' => $result['ten'],
-                    'ho' => $result['ho'],
-                    'ngay_sinh' => $result['ngay_sinh'],
-                    'lop' => $result['lop'],
-                );
-            }
-        }
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $students[] = $row;
     }
 }
 $stmt->close();
@@ -68,6 +41,7 @@ require_once "header.php";
                                 <th>Email</th>
                                 <th>Ngày sinh</th>
                                 <th>Lớp</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -78,6 +52,10 @@ require_once "header.php";
                                     <td><?php print $student['email'] ?></td>
                                     <td><?php print $student['ngay_sinh'] ?></td>
                                     <td><?php print $student['lop'] ?></td>
+                                    <td>
+                                        <span><a href="<?php print path("?p=admin/students/edit&id=") . $student['id'];?>">Sửa</a></span>
+                                        <span><a href="<?php print path("?p=admin/students/delete&id=") . $student['id'];?>">Xoá</a></span>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>
