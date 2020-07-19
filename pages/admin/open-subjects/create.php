@@ -228,6 +228,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Tên học phần',
                                       'name'  => 'ten_hoc_phan',
+                                      'value' => $values['ten_hoc_phan'],
                                     ), ! empty($errors['ten_hoc_phan'])
                                       ? $errors['ten_hoc_phan'] : null);
                                     ?>
@@ -235,6 +236,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Mã học phần',
                                       'name'  => 'ma_hoc_phan',
+                                      'value' => $values['ma_hoc_phan'],
                                     ), ! empty($errors['ma_hoc_phan'])
                                       ? $errors['ma_hoc_phan'] : null);
                                     ?>
@@ -243,6 +245,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Số tín chỉ',
                                       'name'  => 'so_tin_chi',
+                                      'value' => $values['so_tin_chi'],
                                     ), ! empty($errors['so_tin_chi'])
                                       ? $errors['so_tin_chi'] : null);
                                     ?>
@@ -288,6 +291,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Số lượng tối đa',
                                       'name'  => 'so_luong_toi_da',
+                                      'value' => $values['so_luong_toi_da'],
                                     ), ! empty($errors['so_luong_toi_da'])
                                       ? $errors['so_luong_toi_da'] : null);
                                     ?>
@@ -296,21 +300,36 @@ $subjects = getSubjects()
                                         <div class="control">
                                             <div class="select">
                                                 <select name="thu">
-                                                    <option value="2">Thứ 2
-                                                    </option>
-                                                    <option value="3">Thứ 3
-                                                    </option>
-                                                    <option value="4">Thứ 4
-                                                    </option>
-                                                    <option value="5">Thứ 5
-                                                    </option>
-                                                    <option value="6">Thứ 6
-                                                    </option>
-                                                    <option value="7">Thứ 7
-                                                    </option>
-                                                    <option value="cn">Chủ
-                                                        nhật
-                                                    </option>
+                                                    <?php
+                                                    $options = array(
+                                                      '2'  => 'Thứ 2',
+                                                      '3'  => 'Thứ 3',
+                                                      '4 ' => 'Thứ 4',
+                                                      '5'  => 'Thứ 5',
+                                                      '6'  => 'Thứ 6',
+                                                      '7'  => 'Thứ 7',
+                                                      'cn' => 'Chủ nhật',
+                                                    )
+                                                    ?>
+                                                    <?php
+                                                    foreach (
+                                                      $options as $k => $v
+                                                    ) :?>
+                                                        <?php
+                                                        $select = '';
+                                                        if ($values['thu']
+                                                          == $k
+                                                        ) {
+                                                            $select
+                                                              = 'selected';
+                                                        }
+                                                        ?>
+                                                        <option value="<?php
+                                                        print $k ?>"<?php
+                                                        print $select; ?>><?php
+                                                            print $v ?></option>
+                                                    <?php
+                                                    endforeach; ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -320,16 +339,30 @@ $subjects = getSubjects()
                                             đầu</label>
                                         <div class="control">
                                             <select name="tiet_bat_dau">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
+                                                <?php
+                                                $options = array(
+                                                  1,2,3,4,5,6,7,8,9,10
+                                                )
+                                                ?>
+                                                <?php
+                                                foreach (
+                                                  $options as $v
+                                                ) :?>
+                                                    <?php
+                                                    $select = '';
+                                                    if ($values['tiet_bat_dau']
+                                                      == $v
+                                                    ) {
+                                                        $select
+                                                          = 'selected';
+                                                    }
+                                                    ?>
+                                                    <option value="<?php
+                                                    print $v ?>"<?php
+                                                    print $select; ?>><?php
+                                                        print $v ?></option>
+                                                <?php
+                                                endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
@@ -339,16 +372,31 @@ $subjects = getSubjects()
                                             thúc</label>
                                         <div class="control">
                                             <select name="tiet_ket_thuc">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
+                                                <?php
+                                                $options = array(
+                                                  1,2,3,4,5,6,7,8,9,10
+                                                )
+                                                ?>
+                                                <?php
+                                                foreach (
+                                                  $options as $v
+                                                ) :?>
+                                                    <?php
+                                                    $select = '';
+                                                    if ($values['tiet_ket_thuc']
+                                                      == $v
+                                                    ) {
+                                                        $select
+                                                          = 'selected';
+                                                    }
+                                                    ?>
+                                                    <option value="<?php
+                                                    print $v ?>"<?php
+                                                    print $select; ?>><?php
+                                                        print $v ?></option>
+                                                <?php
+                                                endforeach; ?>
+                                            </select>
                                             </select>
                                         </div>
                                     </div>
