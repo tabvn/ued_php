@@ -25,6 +25,25 @@ function getTeachers()
     return $teachers;
 }
 
+function getSubjects()
+{
+    $items = array();
+    $db = Database::getConnection();
+    $stmt = $db->prepare("SELECT id,ten_mon_hoc FROM mon_hoc");
+    if ( ! $stmt->execute()) {
+        $message = array(
+          'type' => 'error', 'message' => htmlspecialchars($stmt->error),
+        );
+    } else {
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+    }
+    $stmt->close();
+    return $items;
+}
+
 function isOverlapSubject($thu, $from, $to)
 {
     $db = Database::getConnection();
@@ -119,6 +138,7 @@ function input($options, $error)
 }
 
 $teachers = getTeachers();
+$subjects = getSubjects()
 ?>
 <div id="content">
     <div class="container">
@@ -152,13 +172,26 @@ $teachers = getTeachers();
                                       print path('/index.php?p=admin/open-subjects/create'); ?>">
                                     <?php
                                     print input(array(
+                                      'label' => 'Tên học phần',
+                                      'name'  => 'ten_hoc_phan',
+                                    ), ! empty($errors['ten_hoc_phan'])
+                                      ? $errors['ten_hoc_phan'] : null);
+                                    ?>
+                                    <?php
+                                    print input(array(
                                       'label' => 'Mã học phần',
                                       'name'  => 'ma_hoc_phan',
                                     ), ! empty($errors['ma_hoc_phan'])
                                       ? $errors['ma_hoc_phan'] : null);
                                     ?>
 
-
+                                    <?php
+                                    print input(array(
+                                      'label' => 'Số tín chỉ',
+                                      'name'  => 'so_tin_chi',
+                                    ), ! empty($errors['so_tin_chi'])
+                                      ? $errors['so_tin_chi'] : null);
+                                    ?>
                                     <div class="field">
                                         <label class="label">Giảng viên</label>
                                         <div class="control">
@@ -177,6 +210,64 @@ $teachers = getTeachers();
                                                     endforeach; ?>
                                                 </select>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Môn học</label>
+                                        <div class="control">
+                                            <div class="select">
+                                                <select name="mon_hoc_id">
+                                                    <?php
+                                                    foreach (
+                                                      $subjects as $subject
+                                                    ): ?>
+                                                        <option value="<?php
+                                                        print $subject['id']; ?>"><?php
+                                                            print $subject['ten_mon_hoc']; ?></option>
+                                                    <?php
+                                                    endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    print input(array(
+                                      'label' => 'Số lượng tối đa',
+                                      'name'  => 'so_luong_toi_da',
+                                    ), ! empty($errors['so_luong_toi_da'])
+                                      ? $errors['so_luong_toi_da'] : null);
+                                    ?>
+                                    <div class="field">
+                                        <label class="label">Thứ</label>
+                                        <div class="control">
+                                            <div class="select">
+                                                <select name="thu">
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="cn">Chủ nhật</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Tiết bắt đầu</label>
+                                        <div class="control">
+                                            <select name="tiet_bat_dau">
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="10">10</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label class="label">Tiết kết thúc</label>
+                                        <div class="control">
+                                            <select name="tiet_ket_thuc">
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="10">10</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="field">
