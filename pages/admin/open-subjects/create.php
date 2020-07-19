@@ -1,14 +1,14 @@
 <?php
 
 $values = array(
-    'id' => '',
-    'ten_hoc_phan' => '',
-    'ma_hoc_phan' => "",
-    'so_tin_chi' => "",
-    'so_luong_toi_da' => "",
-    'thu' => "",
-    'tiet_bat_dau' => "",
-    'tiet_ket_thuc' => "",
+  'id'              => '',
+  'ten_hoc_phan'    => '',
+  'ma_hoc_phan'     => "",
+  'so_tin_chi'      => "",
+  'so_luong_toi_da' => "",
+  'thu'             => "",
+  'tiet_bat_dau'    => "",
+  'tiet_ket_thuc'   => "",
 );
 $errors = array();
 $message = array();
@@ -50,6 +50,7 @@ function getSubjects()
         }
     }
     $stmt->close();
+
     return $items;
 }
 
@@ -69,17 +70,41 @@ function isOverlapSubject($thu, $from, $to)
     return false;
 }
 
-function createOpenSubject($giangvienId, $monhocId, $values)
+function createOpenSubject($values)
 {
+    $values['giang_vien_id'] = (int) $values['giang_vien_id'];
+    $values['mon_hoc_id'] = (int) $values['mon_hoc_id'];
+    $values['tiet_bat_dau'] = (int) $values['tiet_bat_dau'];
+    $values['tiet_ket_thuc'] = (int) $values['tiet_ket_thuc'];
+    $values['so_tin_chi'] = (int) $values['so_tin_chi'];
+    $values['so_luong_toi_da'] = (int) $values['so_luong_toi_da'];
+
+    var_dump($values);
     $db = Database::getConnection();
+<<<<<<< HEAD
   $stmt = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id,) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
   $stmt->bind_param("ssiisiiii", $values['ten_hoc_phan'], $values['ma_hoc_phan'], $values['so_tin_chi'], $values['so_luong_toi_da'], $values['thu'], $values['tiet_bat_dau'], $values['tiet_ket_thuc'], $giangvienId, $monhocId);
+=======
+    $stmt
+      = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiisiiii",
+      $values['ten_hoc_phan'],
+      $values['ma_hoc_phan'],
+      $values['so_tin_chi'],
+      $values['so_luong_toi_da'],
+      $values['thu'],
+      $values['tiet_bat_dau'],
+      $values['tiet_ket_thuc'],
+      $values['giang_vien_id'],
+      $values['mon_hoc_id'],
+      $monhocId);
+    if ( ! $stmt->execute()) {
+        return $stmt->error;
+    }
+    $stmt->close();
+>>>>>>> 2f9d72cb6a01c49b132d63a0ec3ae0f4c2f4f653
 
-    if (!$stmt->execute()) {
-    return $stmt->error;
-  }
-  $stmt->close();
-  return null;
+    return null;
 }
 
 if ( ! empty($_POST)) {
@@ -87,6 +112,11 @@ if ( ! empty($_POST)) {
     $values['ten_hoc_phan'] = $_POST['ten_hoc_phan'];
     $values['so_tin_chi'] = $_POST['so_tin_chi'];
     $values['so_luong_toi_da'] = $_POST['so_luong_toi_da'];
+    $values['thu'] = $_POST['thu'];
+    $values['tiet_bat_dau'] = $_POST['tiet_bat_dau'];
+    $values['tiet_ket_thuc'] = $_POST['tiet_ket_thuc'];
+    $values['giang_vien_id'] = $_POST['giang_vien_id'];
+    $values['mon_hoc_id'] = $_POST['mon_hoc_id'];
     if (empty($values['ma_hoc_phan'])) {
         $errors['ma_hoc_phan'] = 'Mã học phần là bắt buộc!';
     }
@@ -99,8 +129,14 @@ if ( ! empty($_POST)) {
     if (empty($values['so_luong_toi_da'])) {
         $errors['so_luong_toi_da'] = 'Số tín chỉ là bắt buộc!';
     }
+    if (empty($values['mon_hoc_id'])) {
+        $errors['mon_hoc_id'] = 'Môn học là bắt buộc!';
+    }
+    if (empty($values['giang_vien_id'])) {
+        $errors['mon_hoc_id'] = 'Giảng viên là bắt buộc!';
+    }
     if ($errors == null || empty($values)) {
-        $error = createOpenSubject($db->insert_id, $db->insert_id, $values);
+        $error = createOpenSubject($values);
         if ( ! empty($error)) {
             $message = array(
               'type' => 'error', 'message' => "Có lỗi xảy ra:".$error,
@@ -113,6 +149,7 @@ if ( ! empty($_POST)) {
     }
 }
 require_once "header.php";
+
 function getValue($name)
 {
     if ( ! empty($_POST)) {
@@ -224,7 +261,7 @@ $subjects = getSubjects()
                                                       $teachers as $teacher
                                                     ): ?>
                                                         <option value="<?php
-                                                        print $teacher['d']; ?>"><?php
+                                                        print $teacher['id']; ?>"><?php
                                                             print $teacher['ho']
                                                               ." "
                                                               .$teacher['ten']; ?></option>
@@ -264,19 +301,28 @@ $subjects = getSubjects()
                                         <div class="control">
                                             <div class="select">
                                                 <select name="thu">
-                                                    <option value="2">Thứ 2</option>
-                                                    <option value="3">Thứ 3</option>
-                                                    <option value="4">Thứ 4</option>
-                                                    <option value="5">Thứ 5</option>
-                                                    <option value="6">Thứ 6</option>
-                                                    <option value="7">Thứ 7</option>
-                                                    <option value="cn">Chủ nhật</option>
+                                                    <option value="2">Thứ 2
+                                                    </option>
+                                                    <option value="3">Thứ 3
+                                                    </option>
+                                                    <option value="4">Thứ 4
+                                                    </option>
+                                                    <option value="5">Thứ 5
+                                                    </option>
+                                                    <option value="6">Thứ 6
+                                                    </option>
+                                                    <option value="7">Thứ 7
+                                                    </option>
+                                                    <option value="cn">Chủ
+                                                        nhật
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <label class="label">Tiết bắt đầu</label>
+                                        <label class="label">Tiết bắt
+                                            đầu</label>
                                         <div class="control">
                                             <select name="tiet_bat_dau">
                                                 <option value="1">1</option>
@@ -294,7 +340,8 @@ $subjects = getSubjects()
                                     </div>
 
                                     <div class="field">
-                                        <label class="label">Tiết kết thúc</label>
+                                        <label class="label">Tiết kết
+                                            thúc</label>
                                         <div class="control">
                                             <select name="tiet_ket_thuc">
                                                 <option value="1">1</option>
@@ -313,7 +360,8 @@ $subjects = getSubjects()
                                     <div class="field">
                                         <div class="control">
                                             <button type="submit"
-                                                    class="button is-link">Thêm học phần
+                                                    class="button is-link">Thêm
+                                                học phần
                                             </button>
                                         </div>
                                     </div>

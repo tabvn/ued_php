@@ -30,8 +30,11 @@ $user = getCurrentUser();
                 <a class="navbar-item" href="<?php print path("/?p=index.php") ?>" >
                     Trang chủ
                 </a>
-                <a class="navbar-item" href="<?php print path("/?p=admin/open-subjects") ?>" >
+                <a class="navbar-item" href="<?php print path("/?p=subjects") ?>" >
                     Đăng ký học phần
+                </a>
+               <a class="navbar-item" href="<?php print path("/?p=my-subjects") ?>" >
+                    Học phần đã đăng ký
                 </a>
             </div>
             <div class="navbar-end">
