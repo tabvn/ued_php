@@ -10,7 +10,14 @@ $values = array(
 );
 $errors = null;
 $message = null;
+function getUser($id)
+{
+    $id = (int) $id;
+    $db = Database::getConnection();
 
+    return $db->query("SELECT email FROM users WHERE id = $id ")
+      ->fetch_assoc();
+}
 if ( ! empty($_POST)) {
     $values['email'] = trim($_POST['email']);
     $values['password'] = $_POST['password'];
@@ -49,9 +56,18 @@ if ( ! empty($_POST)) {
         $stmt->close();
         $db->commit();
     }
+
+    $users = getUser($id);
+    if (empty($users)) {
+        redirect('?p=notfound');
+    }
+    $values['id'] = $users['id'];
+    $values['email'] = $users['email'];
 }
 require_once "header.php";
 ?>
+
+
 <div id="content">
     <div class="container">
         <div class="columns">
