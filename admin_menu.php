@@ -32,8 +32,8 @@
             Quản trị viên
         </p>
         <ul class="menu-list">
-            <li><a>Tất cả quản trị viên</a></li>
-            <li><a>Thêm quản trị viên</a></li>
+            <li><a href="<?php print path('/?p=admin/users'); ?>">Tất cả quản trị viên</a></li>
+            <li><a href="<?php print path('/?p=admin/users/create'); ?>">Thêm quản trị viên</a></li>
         </ul>
     </aside>
 </div>
