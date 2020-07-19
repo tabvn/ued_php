@@ -1,6 +1,15 @@
 <?php
 
-$values = array();
+$values = array(
+    'id' => '',
+    'ten_hoc_phan' => '',
+    'ma_hoc_phan' => "",
+    'so_tin_chi' => "",
+    'so_luong_toi_da' => "",
+    'thu' => "",
+    'tiet_bat_dau' => "",
+    'tiet_ket_thuc' => "",
+);
 $errors = array();
 $message = array();
 
@@ -60,25 +69,38 @@ function isOverlapSubject($thu, $from, $to)
     return false;
 }
 
-function createOpenSubject($values)
+function createOpenSubject($giangvienId, $monhocId, $values)
 {
-    /*$db = Database::getConnection();
-  $stmt = $db->prepare("INSERT INTO mon_hoc (id, ten_mon_hoc) VALUES (?, ?)");
-  $stmt->bind_param("is", $values['id'], $values['ten_mon_hoc']);
-  if (!$stmt->execute()) {
+    $db = Database::getConnection();
+  $stmt = $db->prepare("INSERT INTO hoc_phan (id, ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id,) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("issiisiiii", $values['id'], $values['ten_hoc_phan'], $values['ma_hoc_phan'], $values['so_tin_chi'], $values['so_luong_toi_da'], $values['thu'], $values['tiet_bat_dau'], $values['tiet_ket_thuc'], $giangvienId, $monhocId);
+
+    if (!$stmt->execute()) {
     return $stmt->error;
   }
   $stmt->close();
-  return null;*/
+  return null;
 }
 
 if ( ! empty($_POST)) {
     $values['ma_hoc_phan'] = $_POST['ma_hoc_phan'];
+    $values['ten_hoc_phan'] = $_POST['ten_hoc_phan'];
+    $values['so_tin_chi'] = $_POST['so_tin_chi'];
+    $values['so_luong_toi_da'] = $_POST['so_luong_toi_da'];
     if (empty($values['ma_hoc_phan'])) {
         $errors['ma_hoc_phan'] = 'Mã học phần là bắt buộc!';
     }
+    if (empty($values['ten_hoc_phan'])) {
+        $errors['ten_hoc_phan'] = 'Tên học phần là bắt buộc!';
+    }
+    if (empty($values['so_tin_chi'])) {
+        $errors['so_tin_chi'] = 'Số tín chỉ là bắt buộc!';
+    }
+    if (empty($values['so_luong_toi_da'])) {
+        $errors['so_luong_toi_da'] = 'Số tín chỉ là bắt buộc!';
+    }
     if ($errors == null || empty($values)) {
-        $error = createOpenSubject($values);
+        $error = createOpenSubject($db->insert_id, $db->insert_id, $values);
         if ( ! empty($error)) {
             $message = array(
               'type' => 'error', 'message' => "Có lỗi xảy ra:".$error,
@@ -150,7 +172,7 @@ $subjects = getSubjects()
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-header-title">Thêm môn học
+                                <div class="card-header-title">Thêm học phần
                                 </div>
                             </div>
                             <div class="card-content">
@@ -242,8 +264,12 @@ $subjects = getSubjects()
                                         <div class="control">
                                             <div class="select">
                                                 <select name="thu">
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
+                                                    <option value="2">Thứ 2</option>
+                                                    <option value="3">Thứ 3</option>
+                                                    <option value="4">Thứ 4</option>
+                                                    <option value="5">Thứ 5</option>
+                                                    <option value="6">Thứ 6</option>
+                                                    <option value="7">Thứ 7</option>
                                                     <option value="cn">Chủ nhật</option>
                                                 </select>
                                             </div>
@@ -253,8 +279,15 @@ $subjects = getSubjects()
                                         <label class="label">Tiết bắt đầu</label>
                                         <div class="control">
                                             <select name="tiet_bat_dau">
+                                                <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
                                                 <option value="10">10</option>
                                             </select>
                                         </div>
@@ -264,8 +297,15 @@ $subjects = getSubjects()
                                         <label class="label">Tiết kết thúc</label>
                                         <div class="control">
                                             <select name="tiet_ket_thuc">
+                                                <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
                                                 <option value="10">10</option>
                                             </select>
                                         </div>
@@ -273,8 +313,7 @@ $subjects = getSubjects()
                                     <div class="field">
                                         <div class="control">
                                             <button type="submit"
-                                                    class="button is-link">Thêm
-                                                môn học
+                                                    class="button is-link">Thêm học phần
                                             </button>
                                         </div>
                                     </div>
