@@ -4,7 +4,7 @@ $subjects = array();
 $message = null;
 $db = Database::getConnection();
 $stmt = $db->prepare(
-  "SELECT hp.id, ten_hoc_phan, ma_hoc_phan, so_tin_chi, hoc_ky_mo, giang_vien_id, mon_hoc_id, so_luong_toi_da,thu,tiet_bat_dau, tiet_ket_thuc, gv.ho,gv.ten, mh.ten_mon_hoc FROM hoc_phan AS hp INNER JOIN giang_vien as gv ON gv.id = hp.giang_vien_id INNER JOIN mon_hoc as mh ON mh.id = hp.mon_hoc_id ORDER BY id DESC"
+  "SELECT hp.id, ten_hoc_phan, ma_hoc_phan, so_tin_chi, giang_vien_id, mon_hoc_id, so_luong_toi_da,thu,tiet_bat_dau, tiet_ket_thuc, gv.ho,gv.ten, mh.ten_mon_hoc FROM hoc_phan AS hp INNER JOIN giang_vien as gv ON gv.id = hp.giang_vien_id INNER JOIN mon_hoc as mh ON mh.id = hp.mon_hoc_id ORDER BY id DESC"
 );
 if ( ! $stmt->execute()) {
     $message = array(
@@ -51,7 +51,6 @@ require_once "header.php";
                                 <th>Mã học phần</th>
                                 <th>Tên học phần</th>
                                 <th>Số tín chỉ</th>
-                                <th>học kì mở</th>
                                 <th>Số lượng tối đa</th>
                                 <th>Giảng viên</th>
                                 <th>Nhóm môn học</th>
@@ -70,8 +69,6 @@ require_once "header.php";
                                         print $subject['ten_hoc_phan'] ?></td>
                                     <td><?php
                                         print $subject['so_tin_chi'] ?></td>
-                                    <td><?php
-                                        print $subject['hoc_ky_mo'] ?></td>
                                     <td><?php
                                         print $subject['so_luong_toi_da'] ?></td>
                                     <td><?php
