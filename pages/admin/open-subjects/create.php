@@ -12,8 +12,6 @@ $values = array(
 );
 $errors = array();
 $message = array();
-
-
 function getTeachers()
 {
     $teachers = array();
@@ -78,8 +76,6 @@ function createOpenSubject($values)
     $values['tiet_ket_thuc'] = (int) $values['tiet_ket_thuc'];
     $values['so_tin_chi'] = (int) $values['so_tin_chi'];
     $values['so_luong_toi_da'] = (int) $values['so_luong_toi_da'];
-
-    var_dump($values);
     $db = Database::getConnection();
     $stmt
       = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -340,7 +336,7 @@ $subjects = getSubjects()
                                             <select name="tiet_bat_dau">
                                                 <?php
                                                 $options = array(
-                                                  1,2,3,4,5,6,7,8,9,10
+                                                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                                 )
                                                 ?>
                                                 <?php
@@ -373,7 +369,7 @@ $subjects = getSubjects()
                                             <select name="tiet_ket_thuc">
                                                 <?php
                                                 $options = array(
-                                                  1,2,3,4,5,6,7,8,9,10
+                                                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                                 )
                                                 ?>
                                                 <?php
