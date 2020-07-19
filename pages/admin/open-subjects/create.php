@@ -1,10 +1,17 @@
 <?php
 
-$values = array();
+$values = array(
+  'id'              => '',
+  'ten_hoc_phan'    => '',
+  'ma_hoc_phan'     => "",
+  'so_tin_chi'      => "",
+  'so_luong_toi_da' => "",
+  'thu'             => "",
+  'tiet_bat_dau'    => "",
+  'tiet_ket_thuc'   => "",
+);
 $errors = array();
 $message = array();
-
-
 function getTeachers()
 {
     $teachers = array();
@@ -41,6 +48,7 @@ function getSubjects()
         }
     }
     $stmt->close();
+
     return $items;
 }
 
@@ -62,20 +70,60 @@ function isOverlapSubject($thu, $from, $to)
 
 function createOpenSubject($values)
 {
-    /*$db = Database::getConnection();
-  $stmt = $db->prepare("INSERT INTO mon_hoc (id, ten_mon_hoc) VALUES (?, ?)");
-  $stmt->bind_param("is", $values['id'], $values['ten_mon_hoc']);
-  if (!$stmt->execute()) {
-    return $stmt->error;
-  }
-  $stmt->close();
-  return null;*/
+    $values['giang_vien_id'] = (int) $values['giang_vien_id'];
+    $values['mon_hoc_id'] = (int) $values['mon_hoc_id'];
+    $values['tiet_bat_dau'] = (int) $values['tiet_bat_dau'];
+    $values['tiet_ket_thuc'] = (int) $values['tiet_ket_thuc'];
+    $values['so_tin_chi'] = (int) $values['so_tin_chi'];
+    $values['so_luong_toi_da'] = (int) $values['so_luong_toi_da'];
+    $db = Database::getConnection();
+    $stmt
+      = $db->prepare("INSERT INTO hoc_phan (ten_hoc_phan, ma_hoc_phan, so_tin_chi, so_luong_toi_da, thu, tiet_bat_dau, tiet_ket_thuc, giang_vien_id, mon_hoc_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiisiiii",
+      $values['ten_hoc_phan'],
+      $values['ma_hoc_phan'],
+      $values['so_tin_chi'],
+      $values['so_luong_toi_da'],
+      $values['thu'],
+      $values['tiet_bat_dau'],
+      $values['tiet_ket_thuc'],
+      $values['giang_vien_id'],
+      $values['mon_hoc_id']);
+    if ( ! $stmt->execute()) {
+        return $stmt->error;
+    }
+    $stmt->close();
+
+    return null;
 }
 
 if ( ! empty($_POST)) {
     $values['ma_hoc_phan'] = $_POST['ma_hoc_phan'];
+    $values['ten_hoc_phan'] = $_POST['ten_hoc_phan'];
+    $values['so_tin_chi'] = $_POST['so_tin_chi'];
+    $values['so_luong_toi_da'] = $_POST['so_luong_toi_da'];
+    $values['thu'] = $_POST['thu'];
+    $values['tiet_bat_dau'] = $_POST['tiet_bat_dau'];
+    $values['tiet_ket_thuc'] = $_POST['tiet_ket_thuc'];
+    $values['giang_vien_id'] = $_POST['giang_vien_id'];
+    $values['mon_hoc_id'] = $_POST['mon_hoc_id'];
     if (empty($values['ma_hoc_phan'])) {
         $errors['ma_hoc_phan'] = 'Mã học phần là bắt buộc!';
+    }
+    if (empty($values['ten_hoc_phan'])) {
+        $errors['ten_hoc_phan'] = 'Tên học phần là bắt buộc!';
+    }
+    if (empty($values['so_tin_chi'])) {
+        $errors['so_tin_chi'] = 'Số tín chỉ là bắt buộc!';
+    }
+    if (empty($values['so_luong_toi_da'])) {
+        $errors['so_luong_toi_da'] = 'Số tín chỉ là bắt buộc!';
+    }
+    if (empty($values['mon_hoc_id'])) {
+        $errors['mon_hoc_id'] = 'Môn học là bắt buộc!';
+    }
+    if (empty($values['giang_vien_id'])) {
+        $errors['mon_hoc_id'] = 'Giảng viên là bắt buộc!';
     }
     if ($errors == null || empty($values)) {
         $error = createOpenSubject($values);
@@ -91,6 +139,7 @@ if ( ! empty($_POST)) {
     }
 }
 require_once "header.php";
+
 function getValue($name)
 {
     if ( ! empty($_POST)) {
@@ -150,7 +199,7 @@ $subjects = getSubjects()
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-header-title">Thêm môn học
+                                <div class="card-header-title">Thêm học phần
                                 </div>
                             </div>
                             <div class="card-content">
@@ -174,6 +223,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Tên học phần',
                                       'name'  => 'ten_hoc_phan',
+                                      'value' => $values['ten_hoc_phan'],
                                     ), ! empty($errors['ten_hoc_phan'])
                                       ? $errors['ten_hoc_phan'] : null);
                                     ?>
@@ -181,6 +231,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Mã học phần',
                                       'name'  => 'ma_hoc_phan',
+                                      'value' => $values['ma_hoc_phan'],
                                     ), ! empty($errors['ma_hoc_phan'])
                                       ? $errors['ma_hoc_phan'] : null);
                                     ?>
@@ -189,6 +240,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Số tín chỉ',
                                       'name'  => 'so_tin_chi',
+                                      'value' => $values['so_tin_chi'],
                                     ), ! empty($errors['so_tin_chi'])
                                       ? $errors['so_tin_chi'] : null);
                                     ?>
@@ -202,7 +254,7 @@ $subjects = getSubjects()
                                                       $teachers as $teacher
                                                     ): ?>
                                                         <option value="<?php
-                                                        print $teacher['d']; ?>"><?php
+                                                        print $teacher['id']; ?>"><?php
                                                             print $teacher['ho']
                                                               ." "
                                                               .$teacher['ten']; ?></option>
@@ -234,6 +286,7 @@ $subjects = getSubjects()
                                     print input(array(
                                       'label' => 'Số lượng tối đa',
                                       'name'  => 'so_luong_toi_da',
+                                      'value' => $values['so_luong_toi_da'],
                                     ), ! empty($errors['so_luong_toi_da'])
                                       ? $errors['so_luong_toi_da'] : null);
                                     ?>
@@ -242,31 +295,103 @@ $subjects = getSubjects()
                                         <div class="control">
                                             <div class="select">
                                                 <select name="thu">
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="cn">Chủ nhật</option>
+                                                    <?php
+                                                    $options = array(
+                                                      '2'  => 'Thứ 2',
+                                                      '3'  => 'Thứ 3',
+                                                      '4 ' => 'Thứ 4',
+                                                      '5'  => 'Thứ 5',
+                                                      '6'  => 'Thứ 6',
+                                                      '7'  => 'Thứ 7',
+                                                      'cn' => 'Chủ nhật',
+                                                    )
+                                                    ?>
+                                                    <?php
+                                                    foreach (
+                                                      $options as $k => $v
+                                                    ) :?>
+                                                        <?php
+                                                        $select = '';
+                                                        if ($values['thu']
+                                                          == $k
+                                                        ) {
+                                                            $select
+                                                              = 'selected';
+                                                        }
+                                                        ?>
+                                                        <option value="<?php
+                                                        print $k ?>"<?php
+                                                        print $select; ?>><?php
+                                                            print $v ?></option>
+                                                    <?php
+                                                    endforeach; ?>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <label class="label">Tiết bắt đầu</label>
+                                        <label class="label">Tiết bắt
+                                            đầu</label>
                                         <div class="control">
                                             <select name="tiet_bat_dau">
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="10">10</option>
+                                                <?php
+                                                $options = array(
+                                                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                                )
+                                                ?>
+                                                <?php
+                                                foreach (
+                                                  $options as $v
+                                                ) :?>
+                                                    <?php
+                                                    $select = '';
+                                                    if ($values['tiet_bat_dau']
+                                                      == $v
+                                                    ) {
+                                                        $select
+                                                          = 'selected';
+                                                    }
+                                                    ?>
+                                                    <option value="<?php
+                                                    print $v ?>"<?php
+                                                    print $select; ?>><?php
+                                                        print $v ?></option>
+                                                <?php
+                                                endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="field">
-                                        <label class="label">Tiết kết thúc</label>
+                                        <label class="label">Tiết kết
+                                            thúc</label>
                                         <div class="control">
                                             <select name="tiet_ket_thuc">
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="10">10</option>
+                                                <?php
+                                                $options = array(
+                                                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                                )
+                                                ?>
+                                                <?php
+                                                foreach (
+                                                  $options as $v
+                                                ) :?>
+                                                    <?php
+                                                    $select = '';
+                                                    if ($values['tiet_ket_thuc']
+                                                      == $v
+                                                    ) {
+                                                        $select
+                                                          = 'selected';
+                                                    }
+                                                    ?>
+                                                    <option value="<?php
+                                                    print $v ?>"<?php
+                                                    print $select; ?>><?php
+                                                        print $v ?></option>
+                                                <?php
+                                                endforeach; ?>
+                                            </select>
                                             </select>
                                         </div>
                                     </div>
@@ -274,7 +399,7 @@ $subjects = getSubjects()
                                         <div class="control">
                                             <button type="submit"
                                                     class="button is-link">Thêm
-                                                môn học
+                                                học phần
                                             </button>
                                         </div>
                                     </div>
