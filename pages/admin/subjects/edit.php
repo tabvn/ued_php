@@ -51,7 +51,7 @@ if ( ! empty($_POST)) {
         } else {
             $message = array(
               'type'    => 'success',
-              'message' => "Thêm thành công!",
+              'message' => "Cập nhật thành công!",
             );
         }
     }
