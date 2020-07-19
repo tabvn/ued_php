@@ -53,6 +53,7 @@ require_once "header.php";
                             <tr>
                                 <th>ID</th>
                                 <th>Môn học</th>
+                                <th>Thao tác</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -60,6 +61,10 @@ require_once "header.php";
                                 <tr>
                                     <td><?php print $subject['id'] ?></td>
                                     <td><?php print $subject['ten_mon_hoc'] ?></td>
+                                    <td>
+                                        <span><a href="<?php print path("?p=admin/subjects/edit&id=") . $subject['id'];?>">Sửa</a></span>
+                                        <span><a href="<?php print path("?p=admin/subjects/delete&id=") . $subject['id'];?>">Xoá</a></span>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>
