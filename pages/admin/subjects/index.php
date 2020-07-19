@@ -3,28 +3,12 @@ $subjects = array();
 $message = null;
 $db = Database::getConnection();
 $stmt = $db->prepare("SELECT id, ten_mon_hoc FROM mon_hoc ORDER BY id");
-
 if (!$stmt->execute()) {
     $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
 } else {
-    $stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $result = array(
-            'id' => NULL,
-            'ten_mon_hoc' => NULL,
-        );
-        $stmt->bind_result(
-            $result['id'],
-            $result['ten_mon_hoc']
-        );
-        if ($stmt->num_rows > 0) {
-            while ($stmt->fetch()) {
-                $subjects[] = array(
-                    'id' => $result['id'],
-                    'ten_mon_hoc' => $result['ten_mon_hoc'],
-                );
-            }
-        }
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $subjects[] = $row;
     }
 }
 $stmt->close();
