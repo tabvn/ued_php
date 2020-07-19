@@ -47,8 +47,8 @@ require_once "header.php";
                                     <td><?php print $row['id'] ?></td>
                                     <td><?php print $row['email'] ?></td>
                                     <td>
-                                        <span><a href="<?php print path("?p=admin/users/edit&id=") . $student['id'];?>">Sửa</a></span>
-                                        <span><a href="<?php print path("?p=admin/users/delete&id=") . $student['id'];?>">Xoá</a></span>
+                                        <span><a href="<?php print path("?p=admin/users/edit&id=") . $row['id'];?>">Sửa</a></span>
+                                        <span><a href="<?php print path("?p=admin/users/delete&id=") . $row['id'];?>">Xoá</a></span>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
