@@ -1,19 +1,12 @@
 <?php
 
-function getUser($id)
-{
 
-}
 
 $id = $_GET['id'];
-if (empty($id)) {
-    header('Location: '.path('?p=notfound.php'));
-    exit;
-}
-$user = getUser($id);
+
 $values = array(
   'email'    => '',
-  'password' => '',
+    'password' =>'',
 );
 $errors = null;
 $message = null;
@@ -35,11 +28,11 @@ if ( ! empty($_POST)) {
     if ($errors == null) {
         // handle create user
         $hash = md5($values['password']);
+        $tk   =$values['email'];
         $db = Database::getConnection();
         $db->begin_transaction();
-        $stmt
-          = $db->prepare("INSERT INTO users (email, password, role) VALUES (?,?,'admin')");
-        $stmt->bind_param("ss", $values['email'], $hash);
+        $stmt     = $db->prepare(" update ued.users set email='$tk',password='$hash' where id='$id' ");
+       // $stmt->bind_param("ss", $values['email'], $hash);
         if ( ! $stmt->execute()) {
             if (endsWith($stmt->error, "'email_UNIQUE'")) {
                 $message = array(
@@ -50,8 +43,7 @@ if ( ! empty($_POST)) {
         } else {
             $message = array(
               'type'    => 'success',
-              'message' => "Tạo tài khoản quản trị ".$values['email']
-                ." thành công!",
+              'message' => "Tạo tài khoản quản trị ".$values['email']." thành công!",
             );
         }
         $stmt->close();
@@ -89,7 +81,7 @@ require_once "header.php";
                                 <?php
                                 endif; ?>
                                 <form method="post" action="<?php
-                                print path('/index.php?p=admin/users/create'); ?>">
+                                print path('/index.php?p=admin/users/edit&id='). $id; ?>">
                                     <div class="field">
                                         <label class="label">Email</label>
                                         <div class="control">
