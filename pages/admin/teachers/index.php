@@ -2,7 +2,7 @@
 $teachers = array();
 $message = null;
 $db = Database::getConnection();
-$stmt = $db->prepare("SELECT id, ho, ten, DATE_FORMAT(ngay_sinh, '%d/%m/%Y') as ngay_sinh,email, dien_thoai FROM giang_vien ORDER BY id");
+$stmt = $db->prepare("SELECT id, ho, ten, DATE_FORMAT(ngay_sinh, '%d/%m/%Y') ,email, dien_thoai FROM giang_vien ORDER BY id");
 
 if (!$stmt->execute()) {
     $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
