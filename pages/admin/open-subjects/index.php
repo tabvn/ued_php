@@ -56,6 +56,7 @@ require_once "header.php";
                                 <th>Nhóm môn học</th>
                                 <th>Thứ</th>
                                 <th>Tiết</th>
+                                <th>Thao tác</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -83,6 +84,10 @@ require_once "header.php";
                                         print 'Tiết '
                                             .$subject['tiet_bat_dau']."-"
                                             .$subject['tiet_ket_thuc']; ?></td>
+                                    <td>
+                                        <span><a href="<?php print path("?p=admin/open-subjects/edit&id=") . $subject['id'];?>">Sửa</a></span>
+                                        <span><a href="<?php print path("?p=admin/open-subjects/delete&id=") . $subject['id'];?>">Xoá</a></span>
+                                    </td>
                                 </tr>
                             <?php
                             endforeach; ?>
