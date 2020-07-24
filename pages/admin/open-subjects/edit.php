@@ -16,7 +16,7 @@ $values = array(
 $errors = null;
 $message = null;
 
-function getSubject($id)
+function getOpenSubject($id)
 {
     $id = (int) $id;
     $db = Database::getConnection();
@@ -25,7 +25,7 @@ function getSubject($id)
       ->fetch_assoc();
 }
 
-function editSubject($values)
+function editOpenSubject($values)
 {
     $db = Database::getConnection();
     $stmt = $db->prepare("UPDATE hoc_phan SET ten_hoc_phan=?, ma_hoc_phan=?, so_tin_chi=?, so_luong_toi_da=?, thu=?, tiet_bat_dau=?, tiet_ket_thuc=? WHERE id = ?");
@@ -72,7 +72,7 @@ if ( ! empty($_POST)) {
         $errors['tiet_ket_thuc'] = 'Bạn phải nhập Tiết kết thúc';
     }
     if ($errors == null) {
-        $error = editSubject($values);
+        $error = editOpenSubject($values);
         if ( ! empty($error)) {
             $message = array(
               'type'    => 'error',
@@ -87,18 +87,18 @@ if ( ! empty($_POST)) {
     }
 }
 $id = $_GET['id'];
-$subject = getSubject($id);
-if (empty($subject)) {
+$openSubject = getOpenSubject($id);
+if (empty($openSubject)) {
     redirect('?p=notfound');
 }
-$values['id'] = $subject['id'];
-$values['ten_hoc_phan'] = $subject['ten_hoc_phan'];
-$values['ma_hoc_phan'] = $subject['ma_hoc_phan'];
-$values['so_tin_chi'] = $subject['so_tin_chi'];
-$values['so_luong_toi_da'] = $subject['so_luong_toi_da'];
-$values['thu'] = $subject['thu'];
-$values['tiet_bat_dau'] = $subject['tiet_bat_dau'];
-$values['tiet_ket_thuc'] = $subject['tiet_ket_thuc'];
+$values['id'] = $openSubject['id'];
+$values['ten_hoc_phan'] = $openSubject['ten_hoc_phan'];
+$values['ma_hoc_phan'] = $openSubject['ma_hoc_phan'];
+$values['so_tin_chi'] = $openSubject['so_tin_chi'];
+$values['so_luong_toi_da'] = $openSubject['so_luong_toi_da'];
+$values['thu'] = $openSubject['thu'];
+$values['tiet_bat_dau'] = $openSubject['tiet_bat_dau'];
+$values['tiet_ket_thuc'] = $openSubject['tiet_ket_thuc'];
 require_once "header.php";
 
 ?>
