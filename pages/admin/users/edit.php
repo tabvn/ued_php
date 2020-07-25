@@ -1,73 +1,75 @@
 <?php
 
-
-
-$id = $_GET['id'];
-
+if (empty($_GET['id'])) {
+    redirect('?p=notfound');
+}
 $values = array(
-  'email'    => '',
-    'password' =>'',
+  'id'          => "",
+  'email' => "",
+  'password' => "",
 );
 $errors = null;
 $message = null;
-function getUser($id)
+
+function getSubject($id)
 {
     $id = (int) $id;
     $db = Database::getConnection();
 
-    return $db->query("SELECT email FROM users WHERE id = $id ")
+    return $db->query("SELECT id, email FROM users WHERE id = $id")
       ->fetch_assoc();
 }
+
+function editSubject($values)
+{
+    $db = Database::getConnection();
+    $hash =md5($values['password']);
+    $stmt = $db->prepare("UPDATE users SET email =? ,password =? WHERE id = ?");
+    $stmt->bind_param("ssi", $values['email'], $hash,$values['id']);
+    if ( ! $stmt->execute()) {
+        return $stmt->error;
+    }
+    $stmt->close();
+
+    return null;
+}
+
 if ( ! empty($_POST)) {
-    $values['email'] = trim($_POST['email']);
-    $values['password'] = $_POST['password'];
-    if (empty($values['email'])) {
-        $errors['email'] = "Địa chỉ email là bắt buộc";
-    }
-    if ( ! empty($values['email'])
-      && ! filter_var($values['email'], FILTER_VALIDATE_EMAIL)
-    ) {
-        $errors['email'] = "Địa chỉ email không hợp lệ";
-    }
+    $values['id'] = $_POST['id'];
+    $values['email'] = $_POST['email'];
+    $values['password'] =$_POST['password'];
     if (empty($values['password'])) {
-        $errors['password'] = "Mật khẩu là bắt buộc";
+        $errors['password'] = 'Bạn phải nhập password';
+    }
+    if (empty($values['email'])) {
+        $errors['email'] = 'Bạn phải nhập vào Email';
     }
     if ($errors == null) {
-        // handle create user
-        $hash = md5($values['password']);
-        $tk   =$values['email'];
-        $db = Database::getConnection();
-        $db->begin_transaction();
-        $stmt     = $db->prepare(" update ued.users set email='$tk',password='$hash' where id='$id' ");
-       // $stmt->bind_param("ss", $values['email'], $hash);
-        if ( ! $stmt->execute()) {
-            if (endsWith($stmt->error, "'email_UNIQUE'")) {
-                $message = array(
-                  'type' => 'error', 'message' => "Địa chỉ email đã tồn tại",
-                );
-                $errors['email'] = 'Địa chỉ email đã tồn tại';
-            }
+        $error = editSubject($values);
+        if ( ! empty($error)) {
+            $message = array(
+              'type'    => 'error',
+              'message' => "Có lỗi xảy ra:".$error,
+            );
         } else {
             $message = array(
               'type'    => 'success',
-              'message' => "Tạo tài khoản quản trị ".$values['email']." thành công!",
+              'message' => "Cập nhật thành công!",
             );
         }
-        $stmt->close();
-        $db->commit();
     }
-
-    $users = getUser($id);
-    if (empty($users)) {
-        redirect('?p=notfound');
-    }
-    $values['id'] = $users['id'];
-    $values['email'] = $users['email'];
 }
+$id = $_GET['id'];
+$subject = getSubject($id);
+if (empty($subject)) {
+    redirect('?p=notfound');
+}
+$values['id'] = $subject['id'];
+$values['email'] = $subject['email'];
+
 require_once "header.php";
+
 ?>
-
-
 <div id="content">
     <div class="container">
         <div class="columns">
@@ -78,8 +80,8 @@ require_once "header.php";
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-header-title">Cập nhật tài
-                                    khoản quản trị viên
+                                <div class="card-header-title">Cập nhật môn
+                                    học
                                 </div>
                             </div>
                             <div class="card-content">
@@ -97,18 +99,24 @@ require_once "header.php";
                                 <?php
                                 endif; ?>
                                 <form method="post" action="<?php
-                                print path('/index.php?p=admin/users/edit&id='). $id; ?>">
+                                print path('/index.php?p=admin/users/edit&id='
+                                  .$id); ?>">
+                                    <div class="field">
+                                        <input value="<?php
+                                        print $values['id']; ?>"
+                                               name="id" class="input"
+                                               type="hidden"
+                                        >
+                                    </div>
                                     <div class="field">
                                         <label class="label">Email</label>
                                         <div class="control">
-                                            <input name="email"
-                                                   class="input <?php
-                                                   print ! empty($errors['email'])
-                                                     ? "is-danger" : ""; ?>"
-                                                   type="email"
-                                                   placeholder="Địa chỉ email"
-                                                   value="<?php
-                                                   print $values['email'] ?>"
+                                            <input value="<?php
+                                            print $values['email']; ?>"
+                                                   name="email"
+                                                   class="input"
+                                                   type="text"
+                                                   placeholder="Email"
                                             >
                                             <?php
                                             if ( ! empty($errors['email'])): ?>
@@ -117,36 +125,30 @@ require_once "header.php";
                                             <?php
                                             endif; ?>
                                         </div>
-
                                     </div>
-                                    <div class="field">
-                                        <label class="label">Mật khẩu</label>
-                                        <div class="control">
-                                            <input name="password"
-                                                   class="input <?php
-                                                   print ! empty($errors['password'])
-                                                     ? 'is-danger' : ''; ?>"
-                                                   type="password"
-                                                   placeholder="Mật khẩu"
-                                                   value="<?php
-                                                   print ! empty($_POST['password'])
-                                                     ? $_POST['password']
-                                                     : ""; ?>"
-                                            >
-                                            <?php
-                                            if ( ! empty($errors['password'])): ?>
-                                                <p class="help is-danger"><?php
-                                                    print $errors['password']; ?></p>
-                                            <?php
-                                            endif; ?>
-                                        </div>
-                                    </div>
+                                 <div class="field">
+                                         <label class="label">Mật Khẩu Mới</label>
+                                         <div class="control">
+                                             <input
+                                                    name="password"
+                                                    class="input"
+                                                    type="password"
+                                                    placeholder="New Password"
+                                             >
+                                             <?php
+                                             if ( ! empty($errors['email'])): ?>
+                                                 <p class="help is-danger"><?php
+                                                     print $errors['email']; ?></p>
+                                             <?php
+                                             endif; ?>
+                                         </div>
+                                     </div>
 
                                     <div class="field">
                                         <div class="control">
                                             <button type="submit"
-                                                    class="button is-link">Cập
-                                                nhật
+                                                    class="button is-link">Cập Nhập
+
                                             </button>
                                         </div>
                                     </div>
