@@ -10,6 +10,7 @@ function path($p)
     if (substr($p, 0, 1) == "/") {
         return $prefix.$_SERVER['HTTP_HOST'].$base_path.ltrim($p, "/");
     }
+
     return $prefix.$_SERVER['HTTP_HOST'].$base_path.$p;
 }
 
@@ -85,4 +86,14 @@ function currentUrl()
 {
     return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https"
         : "http")."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+}
+
+function isAdminPage()
+{
+    $p = ! empty($_GET) && ! empty($_GET['p']) ? $_GET['p'] : '';
+    if (startsWith($p, "/admin") || startsWith($p, 'admin/')) {
+        return true;
+    }
+
+    return false;
 }
