@@ -1,22 +1,67 @@
 <?php
 
+if (empty($_GET['id'])) {
+    redirect('?p=notfound');
+}
+$values = array(
+  'id'          => "",
+  'email' => "",
+
+);
+$errors = null;
+$message = null;
 
 
+function getSubject($id)
+{
+    $id = (int) $id;
+    $db = Database::getConnection();
+
+    return $db->query("SELECT id, email FROM users WHERE id = $id")
+      ->fetch_assoc();
+}
+function editSubject($values)
+{
+    $db = Database::getConnection();
+
+    $stmt = $db->prepare("DELETE from users where id = ? limit 1");
+    $stmt->bind_param("i",$values['id']);
+    if ( ! $stmt->execute()) {
+        return $stmt->error;
+    }
+    $stmt->close();
+
+    return null;
+}
+
+if ( ! empty($_POST)) {
+    $values['id'] = $_POST['id'];
+
+    if ($errors == null) {
+        $error = editSubject($values);
+        if ( ! empty($error)) {
+            $message = array(
+              'type'    => 'error',
+              'message' => "Có lỗi xảy ra:".$error,
+            );
+        } else {
+            $message = array(
+              'type'    => 'success',
+              'message' => "Cập nhật thành công!",
+            );
+        }
+    }
+}
 $id = $_GET['id'];
-
-
-
-
-        $db = Database::getConnection();
-        $db->begin_transaction();
-        $stmt     = $db->prepare(" delete ued.users  where id='$id' ");
-       // $stmt->bind_param("ss", $values['email'], $hash);
-
-
-        $db->commit();
-
+$subject = getSubject($id);
+if (empty($subject)) {
+    redirect('?p=notfound');
+}
+$values['id'] = $subject['id'];
+$values['email'] = $subject['email'];
 
 require_once "header.php";
+
 ?>
 <div id="content">
     <div class="container">
@@ -28,8 +73,8 @@ require_once "header.php";
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-header-title">Cập nhật tài
-                                    khoản quản trị viên
+                                <div class="card-header-title">Xóa Quản Trị Viên
+
                                 </div>
                             </div>
                             <div class="card-content">
@@ -47,8 +92,38 @@ require_once "header.php";
                                 <?php
                                 endif; ?>
                                 <form method="post" action="<?php
-                                print path('/index.php?p=admin/users/delete&id='). $id; ?>">
+                                print path('/index.php?p=admin/users/delete&id='
+                                  .$id); ?>">
+                                    <div class="field">
+                                        <input value="<?php
+                                        print $values['id']; ?>"
+                                               name="id" class="input"
+                                               type="hidden"
+                                        >
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Email</label>
 
+                                        <div class="control">
+                                            <input value="<?php
+                                            print $values['email']; ?>"
+                                                   name="email"
+                                                   class="input"
+                                                   type="button"
+                                                   placeholder="Email"
+                                            >
+
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <button type="submit"
+                                                    class="button is-link">Xóa
+
+                                            </button>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
