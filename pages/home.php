@@ -45,10 +45,10 @@
                 <article class="team box">
                     <div class="box-content">
                         <div class="avatar">
-                            <img src="<?php print path('/assets/images/duy_binh_doan.jpg')?>"  alt=""/>
+                            <img src="<?php print path('/assets/images/toan.jpg')?>"  alt=""/>
                         </div>
-                        <h2 class="title has-text-centered">Đoàn Duy Bình</h2>
-                        <h3 class="subtitle has-text-centered">Lecturer</h3>
+                        <h2 class="title has-text-centered">Nguyễn Đình Toản</h2>
+                        <h3 class="subtitle has-text-centered">Student</h3>
                     </div>
                 </article>
             </div>
@@ -56,10 +56,58 @@
                 <article class="team box">
                     <div class="box-content">
                         <div class="avatar">
-                            <img src="<?php print path('/assets/images/duy_binh_doan.jpg')?>"  alt=""/>
+                            <img src="<?php print path('/assets/images/tien.jpg')?>"  alt=""/>
                         </div>
-                        <h2 class="title has-text-centered">Đoàn Duy Bình</h2>
-                        <h3 class="subtitle has-text-centered">Lecturer</h3>
+                        <h2 class="title has-text-centered">Ngô Lê Thuỷ Tiên</h2>
+                        <h3 class="subtitle has-text-centered">Student</h3>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <article class="team box">
+                    <div class="box-content">
+                        <div class="avatar">
+                            <img src="<?php print path('/assets/images/khue.jpg')?>"  alt=""/>
+                        </div>
+                        <h2 class="title has-text-centered">Đào Ngọc Khuê</h2>
+                        <h3 class="subtitle has-text-centered">Student</h3>
+                    </div>
+                </article>
+            </div>
+            <div class="column">
+                <article class="team box">
+                    <div class="box-content">
+                        <div class="avatar">
+                            <img src="<?php print path('/assets/images/sang.jpg')?>"  alt=""/>
+                        </div>
+                        <h2 class="title has-text-centered">Huỳnh Văn Sang</h2>
+                        <h3 class="subtitle has-text-centered">Student</h3>
+                    </div>
+                </article>
+            </div>
+            <div class="column">
+                <article class="team box">
+                    <div class="box-content">
+                        <div class="avatar">
+                            <img src="<?php print path('/assets/images/truyen.jpg')?>"  alt=""/>
+                        </div>
+                        <h2 class="title has-text-centered">Lê Thị Thanh Truyền</h2>
+                        <h3 class="subtitle has-text-centered">Student</h3>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-one-third">
+                <article class="team box">
+                    <div class="box-content">
+                        <div class="avatar">
+                            <img src="<?php print path('/assets/images/phet.jpg')?>"  alt=""/>
+                        </div>
+                        <h2 class="title has-text-centered">Phetpho Panyanouvong</h2>
+                        <h3 class="subtitle has-text-centered">Student</h3>
                     </div>
                 </article>
             </div>
