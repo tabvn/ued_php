@@ -1,6 +1,6 @@
 <?php
 
-$students = array();
+$teachers = array();
 $message = null;
 $db = Database::getConnection();
 // delete
@@ -30,7 +30,7 @@ if ( ! $stmt->execute()) {
 } else {
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-        $students[] = $row;
+        $teachers[] = $row;
     }
 }
 $stmt->close();
@@ -63,40 +63,43 @@ require_once "header.php";
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Họ Tên</th>
+                                <th>ID</th>
+                                <th>Họ tên</th>
                                 <th>Ngày sinh</th>
                                 <th>Email</th>
-                                <th>SĐT</th>
+                                <th>Số điện thoại</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                            foreach ($students as $student): ?>
+                            foreach ($teachers as $teacher): ?>
                                 <tr>
                                     <td><?php
-                                        print $student['ho']." "
-                                            .$student['ten'] ?></td>
+                                        print $teacher['id'] ?></td>
                                     <td><?php
-                                        print $student['ngay_sinh'] ?></td>
+                                        print $teacher['ho']." "
+                                            .$teacher['ten'] ?></td>
                                     <td><?php
-                                        print $student['email'] ?></td>
+                                        print $teacher['ngay_sinh'] ?></td>
                                     <td><?php
-                                        print $student['dien_thoai'] ?></td>
+                                        print $teacher['email'] ?></td>
+                                    <td><?php
+                                        print $teacher['dien_thoai'] ?></td>
                                     <td>
                                         <div class="is-flex">
                                             <button class="button is-text"><a
                                                         href="<?php
                                                         print path("?p=admin/teachers/edit&id=")
-                                                            .$student['id']; ?>">Sửa</a>
+                                                            .$teacher['id']; ?>">Sửa</a>
                                             </button>
                                             <form method="post" action="<?php
                                             print currentUrl(); ?>"
                                                   id="form-<?php
-                                                  print $student['id'] ?>">
+                                                  print $teacher['id'] ?>">
                                                 <input name="delete_id"
                                                        value="<?php
-                                                       print $student['id'] ?>"
+                                                       print $teacher['id'] ?>"
                                                        type="hidden">
                                                 <button type="submit"
                                                         class="button is-text">
