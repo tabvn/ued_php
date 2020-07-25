@@ -6,6 +6,7 @@ define("DB_PASSWORD", "root");
 
 
 
+
 define("PATH", "/ued/"); // nhớ đổi thông số này nhé nếu các bạn thì có thể đổi sang "/ued/"
 
 ?>

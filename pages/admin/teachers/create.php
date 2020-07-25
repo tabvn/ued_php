@@ -76,7 +76,7 @@ require_once "header.php";
                                         </div>
                                     </article>
                                 <?php endif; ?>
-                                <form method="post" action="<?php print path('/index.php?p=admin/teachers/create'); ?>">
+                                <form method="post" action="<?php print currentUrl(); ?>">
 
                                     <div class="field">
                                         <label class="label">Họ</label>
