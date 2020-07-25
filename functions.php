@@ -5,11 +5,12 @@ session_start();
 function path($p)
 {
     global $base_path;
+    $prefix = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https"
+        : "http")."://";
     if (substr($p, 0, 1) == "/") {
-        return $base_path.ltrim($p, "/");
+        return $prefix.$_SERVER['HTTP_HOST'].$base_path.ltrim($p, "/");
     }
-
-    return $base_path.$p;
+    return $prefix.$_SERVER['HTTP_HOST'].$base_path.$p;
 }
 
 function redirect($path)
