@@ -7,8 +7,8 @@ $values = array(
   'so_tin_chi'      => "",
   'so_luong_toi_da' => "",
   'thu'             => "",
-  'tiet_bat_dau'    => "",
-  'tiet_ket_thuc'   => "",
+  'tiet_bat_dau'    => 1,
+  'tiet_ket_thuc'   => 3,
 );
 $errors = array();
 $message = array();
@@ -332,75 +332,86 @@ $subjects = getSubjects()
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="field">
-                                        <label class="label">Tiết bắt
-                                            đầu</label>
-                                        <div class="control">
-                                            <select name="tiet_bat_dau">
-                                                <?php
-                                                $options = array(
-                                                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                                )
-                                                ?>
-                                                <?php
-                                                foreach (
-                                                  $options as $v
-                                                ) :?>
-                                                    <?php
-                                                    $select = '';
-                                                    if ($values['tiet_bat_dau']
-                                                      == $v
-                                                    ) {
-                                                        $select
-                                                          = 'selected';
-                                                    }
-                                                    ?>
-                                                    <option value="<?php
-                                                    print $v ?>"<?php
-                                                    print $select; ?>><?php
-                                                        print $v ?></option>
-                                                <?php
-                                                endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="field">
-                                        <label class="label">Tiết kết
-                                            thúc</label>
-                                        <div class="control">
-                                            <div class="select<?php print !empty($errors['tiet_ket_thuc']) ? ' is-danger' : ''?>">
-                                                <select name="tiet_ket_thuc">
-                                                    <?php
-                                                    $options = array(
-                                                      1, 2, 3, 4, 5, 6, 7, 8, 9,
-                                                      10,
-                                                    )
-                                                    ?>
-                                                    <?php
-                                                    foreach (
-                                                      $options as $v
-                                                    ) :?>
+                                    <div class="is-flex">
+                                        <div class="field">
+                                            <label class="label">Tiết bắt
+                                                đầu</label>
+                                            <div class="control">
+                                                <div class="select">
+                                                    <select name="tiet_bat_dau">
                                                         <?php
-                                                        $select = '';
-                                                        if ($values['tiet_ket_thuc']
-                                                          == $v
-                                                        ) {
-                                                            $select
-                                                              = 'selected';
-                                                        }
+                                                        $options = array(
+                                                          1, 2, 3, 4, 5, 6, 7,
+                                                          8, 9, 10,
+                                                        )
                                                         ?>
-                                                        <option value="<?php
-                                                        print $v ?>"<?php
-                                                        print $select; ?>><?php
-                                                            print $v ?></option>
-                                                    <?php
-                                                    endforeach; ?>
-                                                </select>
+                                                        <?php
+                                                        foreach (
+                                                          $options as $v
+                                                        ) :?>
+                                                            <?php
+                                                            $select = '';
+                                                            if ($values['tiet_bat_dau']
+                                                              == $v
+                                                            ) {
+                                                                $select
+                                                                  = 'selected';
+                                                            }
+                                                            ?>
+                                                            <option value="<?php
+                                                            print $v ?>"<?php
+                                                            print $select; ?>><?php
+                                                                print $v ?></option>
+                                                        <?php
+                                                        endforeach; ?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <?php if (!empty($errors['tiet_ket_thuc'])):?>
-                                                <p class="help is-danger"><?php print $errors['tiet_ket_thuc'];?></p>
-                                            <?php endif;?>
+                                        </div>
+
+                                        <div class="field">
+                                            <label class="label">Tiết kết
+                                                thúc</label>
+                                            <div class="control">
+                                                <div class="select<?php
+                                                print ! empty($errors['tiet_ket_thuc'])
+                                                  ? ' is-danger' : '' ?>">
+                                                    <select name="tiet_ket_thuc">
+                                                        <?php
+                                                        $options = array(
+                                                          1, 2, 3, 4, 5, 6, 7,
+                                                          8, 9,
+                                                          10,
+                                                        )
+                                                        ?>
+                                                        <?php
+                                                        foreach (
+                                                          $options as $v
+                                                        ) :?>
+                                                            <?php
+                                                            $select = '';
+                                                            if ($values['tiet_ket_thuc']
+                                                              == $v
+                                                            ) {
+                                                                $select
+                                                                  = 'selected';
+                                                            }
+                                                            ?>
+                                                            <option value="<?php
+                                                            print $v ?>"<?php
+                                                            print $select; ?>><?php
+                                                                print $v ?></option>
+                                                        <?php
+                                                        endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <?php
+                                                if ( ! empty($errors['tiet_ket_thuc'])): ?>
+                                                    <p class="help is-danger"><?php
+                                                        print $errors['tiet_ket_thuc']; ?></p>
+                                                <?php
+                                                endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="field">
