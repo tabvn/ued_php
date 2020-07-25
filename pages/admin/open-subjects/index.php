@@ -103,7 +103,7 @@ require_once "header.php";
                                     <td>
                                     <td>
                                         <div class="is-flex">
-                                            <button type="button" class="button is-text">Sửa</button>
+                                            <a href="<?php print path('?p=admin/open-subjects/edit&id='.$subject['id'])?>" class="button is-text">Sửa</a>
                                             <form id="form-<?php print $subject['id']?>" action="<?php print currentUrl();?>" method="post">
                                                 <input name="delete_id" type="hidden" value="<?php print $subject['id'];?>">
                                                 <button type="submit" class="button is-text">Xoá</button>
