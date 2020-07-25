@@ -5,8 +5,22 @@ function getSubject($id)
     $id = (int) $id;
     $db = Database::getConnection();
 
-    return $db->query("SELECT id, thu,tiet_bat_dau, tiet_ket_thuc FROM hoc_phan WHERE id = $id")
+    return $db->query("SELECT id, thu,tiet_bat_dau, tiet_ket_thuc, so_luong_toi_da FROM hoc_phan WHERE id = $id")
       ->fetch_assoc();
+}
+
+function isReachLimit($id, $total)
+{
+    $id = (int) $id;
+    $db = Database::getConnection();
+    $result
+      = $db->query("SELECT COUNT(*) as total FROM dang_ky WHERE hoc_phan_id =$id")
+      ->fetch_assoc();
+    if ($result['total'] >= $total) {
+        return true;
+    }
+
+    return false;
 }
 
 function isOverlapSubject($userId, $thu, $from, $to)
@@ -51,17 +65,24 @@ if ( ! empty($_POST) && ! empty($_POST['dk'])) {
         );
     } else {
         // dk now
-        $stmt
-          = $db->prepare("INSERT INTO dang_ky (hoc_phan_id, user_id) VALUES (?,?)");
-        $stmt->bind_param("ii", $subject['id'], $userId);
-        if ( ! $stmt->execute()) {
-            $message = array('message' => $stmt->error, 'type' => 'error');
-        } else {
+        if (isReachLimit($id, $subject['so_luong_toi_da'])) {
             $message = array(
-              'message' => "Đăng ký thành công", 'type' => 'success',
+              'type'    => 'error',
+              'message' => 'Đăng ký không thành công lý do: lớp học phần đã đầy!',
             );
+        } else {
+            $stmt
+              = $db->prepare("INSERT INTO dang_ky (hoc_phan_id, user_id) VALUES (?,?)");
+            $stmt->bind_param("ii", $subject['id'], $userId);
+            if ( ! $stmt->execute()) {
+                $message = array('message' => $stmt->error, 'type' => 'error');
+            } else {
+                $message = array(
+                  'message' => "Đăng ký thành công", 'type' => 'success',
+                );
+            }
+            $stmt->close();
         }
-        $stmt->close();
     }
 }
 
