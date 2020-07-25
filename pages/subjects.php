@@ -46,17 +46,17 @@ if ( ! empty($_POST) && ! empty($_POST['dk'])) {
       $subject['tiet_ket_thuc'])
     ) {
         $message = array(
-          'type' => 'error',
+          'type'    => 'error',
           'message' => 'Đăng ký không thành công lý do: trùng lịch học',
         );
     } else {
         // dk now
         $stmt
           = $db->prepare("INSERT INTO dang_ky (hoc_phan_id, user_id) VALUES (?,?)");
-        $stmt->bind_param("ii", $subject['id'], $id);
+        $stmt->bind_param("ii", $subject['id'], $userId);
         if ( ! $stmt->execute()) {
             $message = array('message' => $stmt->error, 'type' => 'error');
-        }else{
+        } else {
             $message = array(
               'message' => "Đăng ký thành công", 'type' => 'success',
             );
@@ -70,7 +70,7 @@ if ( ! empty($_POST) && ! empty($_POST['huy_dk'])) {
     $id = (int) $_POST['huy_dk'];
     $stmt
       = $db->prepare("DELETE FROM dang_ky WHERE user_id =? AND hoc_phan_id = ?");
-    $stmt->bind_param("ii", $id, $userId);
+    $stmt->bind_param("ii", $userId, $id);
     if ( ! $stmt->execute()) {
         $message = array('message' => $stmt->error, 'type' => 'error');
     } else {
