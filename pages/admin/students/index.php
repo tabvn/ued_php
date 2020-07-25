@@ -1,5 +1,4 @@
 <?php
-
 $students = array();
 $message = null;
 $db = Database::getConnection();
@@ -21,7 +20,7 @@ if ( ! empty($_POST) && ! empty($_POST['delete_id'])) {
 }
 // get
 $stmt
-  = $db->prepare("SELECT u.id,u.email, sv.ma_sinh_vien, sv.ten, sv.ho, DATE_FORMAT(sv.ngay_sinh, '%d/%m/%Y') as ngay_sinh, sv.lop FROM sinh_vien as sv INNER JOIN users as u ON u.id = sv.user_id order by u.id asc LIMIT 0,10");
+  = $db->prepare("SELECT u.id,u.email, sv.id as svid,sv.ma_sinh_vien, sv.ten, sv.ho, DATE_FORMAT(sv.ngay_sinh, '%d/%m/%Y') as ngay_sinh, sv.lop FROM sinh_vien as sv INNER JOIN users as u ON u.id = sv.user_id order by u.id asc LIMIT 0,10");
 //$stmt->bind_param("i", 10);
 if ( ! $stmt->execute()) {
     $message = array(
@@ -91,7 +90,7 @@ require_once "header.php";
                                             <button class="button is-text"><a
                                                         href="<?php
                                                         print path("?p=admin/students/edit&id=")
-                                                          .$student['id']; ?>">Sửa</a>
+                                                          .$student['svid']; ?>">Sửa</a>
                                             </button>
                                             <form method="post" action="<?php
                                             print currentUrl(); ?>"
