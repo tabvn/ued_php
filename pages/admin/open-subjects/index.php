@@ -1,8 +1,23 @@
 <?php
-
 $subjects = array();
 $message = null;
 $db = Database::getConnection();
+
+//DELETE
+if(!empty($_POST) && !empty($_POST['delete_id'])){
+    $delete_id = $_POST['delete_id'];
+    $s = $db->prepare("DELETE FROM hoc_phan WHERE id = ?");
+    $s->bind_param("i",$delete_id);
+    if ( ! $s->execute()) {
+        $message = array('type' => 'success', 'message' => 'Lỗi xảy ra: '.$s->error);
+    } else {
+        $message = array('type'    => 'success',
+                         'message' => 'Xoá thành công',
+        );
+    }
+    $s->close();
+}
+// GET
 $stmt = $db->prepare(
   "SELECT hp.id, ten_hoc_phan, ma_hoc_phan, so_tin_chi, giang_vien_id, mon_hoc_id, so_luong_toi_da,thu,tiet_bat_dau, tiet_ket_thuc, gv.ho,gv.ten, mh.ten_mon_hoc FROM hoc_phan AS hp INNER JOIN giang_vien as gv ON gv.id = hp.giang_vien_id INNER JOIN mon_hoc as mh ON mh.id = hp.mon_hoc_id ORDER BY id DESC"
 );
@@ -56,15 +71,16 @@ require_once "header.php";
                                 <th>Nhóm môn học</th>
                                 <th>Thứ</th>
                                 <th>Tiết</th>
-                                <th>Thao tác</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
                             foreach ($subjects as $subject): ?>
                                 <tr>
-                                    <td><?php
-                                        print $subject['id'] ?></td>
+                                    <td><abbr><?php
+                                        print $subject['id'] ?></abbr></td>
                                     <td><?php
                                         print $subject['ma_hoc_phan'] ?></td>
                                     <td><?php
@@ -85,8 +101,15 @@ require_once "header.php";
                                             .$subject['tiet_bat_dau']."-"
                                             .$subject['tiet_ket_thuc']; ?></td>
                                     <td>
-                                        <span><a href="<?php print path("?p=admin/open-subjects/edit&id=") . $subject['id'];?>">Sửa</a></span>
-                                        <span><a href="<?php print path("?p=admin/open-subjects/delete&id=") . $subject['id'];?>">Xoá</a></span>
+                                    <td>
+                                        <div class="is-flex">
+                                            <button type="button" class="button is-text">Sửa</button>
+                                            <form id="form-<?php print $subject['id']?>" action="<?php print currentUrl();?>" method="post">
+                                                <input name="delete_id" type="hidden" value="<?php print $subject['id'];?>">
+                                                <button type="submit" class="button is-text">Xoá</button>
+                                            </form>
+                                        </div>
+                                    </td>
                                     </td>
                                 </tr>
                             <?php

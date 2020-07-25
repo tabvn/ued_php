@@ -125,6 +125,9 @@ if ( ! empty($_POST)) {
     if (empty($values['giang_vien_id'])) {
         $errors['mon_hoc_id'] = 'Giảng viên là bắt buộc!';
     }
+    if($values['tiet_ket_thuc'] <= $values['tiet_bat_dau']){
+        $errors['tiet_ket_thuc'] = 'Tiết kết thúc phải lớn hơn tiết bắt đầu';
+    }
     if ($errors == null || empty($values)) {
         $error = createOpenSubject($values);
         if ( ! empty($error)) {
