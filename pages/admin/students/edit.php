@@ -4,11 +4,11 @@ if (empty($_GET['id'])) {
     redirect('?p=notfound');
 }
 $values = array(
-    'ma_sinh_vien' => '',
-    'ten' => "",
-    'ho' => '',
-    'ngay_sinh' => "",
-    'lop' => "",
+  'ma_sinh_vien' => '',
+  'ten'          => "",
+  'ho'           => '',
+  'ngay_sinh'    => "",
+  'lop'          => "",
 );
 $errors = null;
 $message = null;
@@ -18,15 +18,17 @@ function getStudent($id)
     $id = (int) $id;
     $db = Database::getConnection();
 
-    return $db->query("SELECT id,ma_sinh_vien, ten, ho, ngay_sinh,lop FROM sinh_vien WHERE id = $id")
-        ->fetch_assoc();
+    return $db->query("SELECT id,ma_sinh_vien, ten, ho, DATE_FORMAT(ngay_sinh, '%d/%m/%Y') as ngay_sinh,lop FROM sinh_vien WHERE id = $id")
+      ->fetch_assoc();
 }
 
 function editStudent($values)
 {
     $db = Database::getConnection();
-    $stmt = $db->prepare("UPDATE sinh_vien SET ma_sinh_vien=?,ten=?,ho=?,ngay_sinh=?,lop=? WHERE id = ?");
-    $stmt->bind_param("sssdsi", $values['ma_sinh_vien'],$values['ten'],$values['ho'],$values['ngay_sinh'],$values['lop'],$values['id']);
+    $stmt
+      = $db->prepare("UPDATE sinh_vien SET ma_sinh_vien=?,ten=?,ho=?,ngay_sinh=?,lop=? WHERE id = ?");
+    $stmt->bind_param("sssssi", $values['ma_sinh_vien'], $values['ten'],
+      $values['ho'], $values['ngay_sinh'], $values['lop'], $values['id']);
     if ( ! $stmt->execute()) {
         return $stmt->error;
     }
@@ -41,6 +43,7 @@ if ( ! empty($_POST)) {
     $values['ngay_sinh'] = $_POST['ngay_sinh'];
     $values['ho'] = $_POST['ho'];
     $values['ten'] = $_POST['ten'];
+    $values['id'] = $_GET['id'];
     if (empty($values['lop'])) {
         $errors['lop'] = "Lớp là bắt buộc";
     }
@@ -59,7 +62,7 @@ if ( ! empty($_POST)) {
         $errors['ten'] = 'Bạn phải nhập vào Tên';
     }
 
-    if (!empty($values['ngay_sinh'])) {
+    if ( ! empty($values['ngay_sinh'])) {
         $split = explode("/", $values['ngay_sinh']);
         if (count($split) < 3) {
             $errors['ngay_sinh'] = 'Ngày sinh không đúng!';
@@ -71,76 +74,94 @@ if ( ! empty($_POST)) {
         $error = editStudent($values);
         if ( ! empty($error)) {
             $message = array(
-                'type'    => 'error',
-                'message' => "Có lỗi xảy ra:".$error,
+              'type'    => 'error',
+              'message' => "Có lỗi xảy ra:".$error,
             );
         } else {
             $message = array(
-                'type'    => 'success',
-                'message' => "Cập nhật thành công!",
+              'type'    => 'success',
+              'message' => "Cập nhật thành công!",
             );
         }
     }
 }
 $id = $_GET['id'];
-$subject = getStudent($id);
-if (empty($subject)) {
+$obj = getStudent($id);
+if (empty($obj)) {
     redirect('?p=notfound');
 }
-$values['id'] = $subject['id'];
-$values['ma_sinh_vien']=$subject['ma_sinh_vien'];
-$values['ho']=$subject['ho'];
-$values['ten']=$subject['ten'];
-$values['ngay_sinh']=$subject['ngay_sinh'];
-$values['lop']=$subject['lop'];
+$values['id'] = $obj['id'];
+$values['ma_sinh_vien'] = $obj['ma_sinh_vien'];
+$values['ho'] = $obj['ho'];
+$values['ten'] = $obj['ten'];
+$values['ngay_sinh'] = $obj['ngay_sinh'];
+$values['lop'] = $obj['lop'];
 require_once "header.php";
 
 ?>
 <div id="content">
     <div class="container">
         <div class="columns">
-            <?php require_once "admin_menu.php"; ?>
+            <?php
+            require_once "admin_menu.php"; ?>
             <div class="column is-9">
                 <div class="columns">
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-header-title">Cập nhật sinh viên</div>
+                                <div class="card-header-title">Cập nhật sinh
+                                    viên
+                                </div>
                             </div>
                             <div class="card-content">
-                                <?php if (!empty($message)): ?>
+                                <?php
+                                if ( ! empty($message)): ?>
                                     <article
-                                        class="message <?php print $message['type'] == 'error' ? 'is-danger' : 'is-success' ?>">
+                                            class="message <?php
+                                            print $message['type'] == 'error'
+                                              ? 'is-danger' : 'is-success' ?>">
                                         <div class="message-body">
-                                            <?php print $message['message']; ?>
+                                            <?php
+                                            print $message['message']; ?>
                                         </div>
                                     </article>
-                                <?php endif; ?>
-                                <form method="post" action="<?php print path('/index.php?p=admin/students/edit&id=').$id; ?>">
+                                <?php
+                                endif; ?>
+                                <form method="post" action="<?php
+                                print path('/index.php?p=admin/students/edit&id=')
+                                  .$id; ?>">
 
 
                                     <div class="field">
                                         <label class="label">Họ</label>
                                         <div class="control">
-                                            <input value="<?php print $values['ho']; ?>"
+                                            <input value="<?php
+                                            print $values['ho']; ?>"
                                                    name="ho" class="input"
                                                    type="text" placeholder="Họ"
                                             >
-                                            <?php if (!empty($errors['ho'])): ?>
-                                                <p class="help is-danger"><?php print $errors['ho']; ?></p>
-                                            <?php endif; ?>
+                                            <?php
+                                            if ( ! empty($errors['ho'])): ?>
+                                                <p class="help is-danger"><?php
+                                                    print $errors['ho']; ?></p>
+                                            <?php
+                                            endif; ?>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <label class="label">Tên</label>
                                         <div class="control">
-                                            <input value="<?php print $values['ten']; ?>"
+                                            <input value="<?php
+                                            print $values['ten']; ?>"
                                                    name="ten" class="input"
                                                    type="text" placeholder="Tên"
                                             >
-                                            <?php if (!empty($errors['ten'])): ?>
-                                                <p class="help is-danger"><?php print $errors['ten']; ?></p>
-                                            <?php endif; ?>
+                                            <?php
+                                            if ( ! empty($errors['ten'])): ?>
+                                                <p class="help is-danger"><?php
+                                                    print $errors['ten']; ?></p>
+                                            <?php
+                                            endif; ?>
 
                                         </div>
                                     </div>
@@ -148,27 +169,43 @@ require_once "header.php";
                                     <div class="field">
                                         <label class="label">Ngày sinh</label>
                                         <div class="control">
-                                            <input value="<?php print !empty($_POST['ngay_sinh']) ? $_POST['ngay_sinh'] : ""; ?>"
-                                                   name="ngay_sinh" class="input"
-                                                   type="text" placeholder="DD/MM/YYYY"
+                                            <input value="<?php
+                                            print ! empty($_POST['ngay_sinh'])
+                                              ? $_POST['ngay_sinh']
+                                              : $values['ngay_sinh']; ?>"
+                                                   name="ngay_sinh"
+                                                   class="input"
+                                                   type="text"
+                                                   placeholder="DD/MM/YYYY"
                                             >
                                         </div>
-                                        <?php if (!empty($errors['ngay_sinh'])): ?>
-                                            <p class="help is-danger"><?php print $errors['ngay_sinh']; ?></p>
-                                        <?php endif; ?>
+                                        <?php
+                                        if ( ! empty($errors['ngay_sinh'])): ?>
+                                            <p class="help is-danger"><?php
+                                                print $errors['ngay_sinh']; ?></p>
+                                        <?php
+                                        endif; ?>
                                     </div>
 
                                     <div class="field">
-                                        <label class="label">Mã Sinh viên</label>
+                                        <label class="label">Mã Sinh
+                                            viên</label>
                                         <div class="control">
-                                            <input value="<?php print $values['ma_sinh_vien']; ?>"
+                                            <input value="<?php
+                                            print $values['ma_sinh_vien']; ?>"
                                                    name="ma_sinh_vien"
-                                                   class="input <?php print !empty($errors['ma_sinh_vien']) ? 'is-danger' : ''; ?>"
-                                                   type="text" placeholder="Mã sinh viên"
+                                                   class="input <?php
+                                                   print ! empty($errors['ma_sinh_vien'])
+                                                     ? 'is-danger' : ''; ?>"
+                                                   type="text"
+                                                   placeholder="Mã sinh viên"
                                             >
-                                            <?php if (!empty($errors['ma_sinh_vien'])): ?>
-                                                <p class="help is-danger"><?php print $errors['ma_sinh_vien']; ?></p>
-                                            <?php endif; ?>
+                                            <?php
+                                            if ( ! empty($errors['ma_sinh_vien'])): ?>
+                                                <p class="help is-danger"><?php
+                                                    print $errors['ma_sinh_vien']; ?></p>
+                                            <?php
+                                            endif; ?>
 
                                         </div>
                                     </div>
@@ -177,17 +214,26 @@ require_once "header.php";
                                         <label class="label">Lớp</label>
                                         <div class="control">
                                             <input name="lop"
-                                                   class="input <?php print !empty($errors['lop']) ? 'is-danger' : ''; ?>"
+                                                   class="input <?php
+                                                   print ! empty($errors['lop'])
+                                                     ? 'is-danger' : ''; ?>"
                                                    type="text" placeholder="Lớp"
-                                                   value="<?php print $values['lop']; ?>">
+                                                   value="<?php
+                                                   print $values['lop']; ?>">
                                         </div>
-                                        <?php if (!empty($errors['lop'])): ?>
-                                            <p class="help is-danger"><?php print $errors['lop']; ?></p>
-                                        <?php endif; ?>
+                                        <?php
+                                        if ( ! empty($errors['lop'])): ?>
+                                            <p class="help is-danger"><?php
+                                                print $errors['lop']; ?></p>
+                                        <?php
+                                        endif; ?>
                                     </div>
                                     <div class="field">
                                         <div class="control">
-                                            <button type="submit" class="button is-link">Cập nhật</button>
+                                            <button type="submit"
+                                                    class="button is-link">Cập
+                                                nhật
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
