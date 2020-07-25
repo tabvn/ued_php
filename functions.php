@@ -97,3 +97,17 @@ function isAdminPage()
 
     return false;
 }
+
+function navLink($title, $path, $defaultClass)
+{
+    $class = "link-item";
+    if ( ! empty($defaultClass)) {
+        $class .= " ".$defaultClass;
+    }
+    $p = path($path);
+    if ($p == currentUrl()) {
+        $class .= " is-active";
+    }
+
+    return '<a class="'.$class.'" href="'.$p.'">'.$title.'</a>';
+}

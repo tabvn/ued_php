@@ -37,6 +37,8 @@ if ( ! empty($_POST)) {
             $message = array('type'    => 'success',
                              'message' => 'Cập nhật thông tin thành công!',
             );
+            $user['email'] = $values['email'];
+            $_SESSION['user'] = $user;
         } else {
             $message = array('type'    => 'success',
                              'message' => 'Lỗi xảy ra: '.$q->error,

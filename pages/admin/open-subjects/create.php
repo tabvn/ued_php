@@ -221,7 +221,7 @@ $subjects = getSubjects()
                                 endif; ?>
                                 <form method="post"
                                       action="<?php
-                                      print path('/index.php?p=admin/open-subjects/create'); ?>">
+                                      print currentUrl(); ?>">
                                     <?php
                                     print input(array(
                                       'label' => 'Tên học phần',
