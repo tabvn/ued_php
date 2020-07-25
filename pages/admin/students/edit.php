@@ -135,12 +135,12 @@ if ( ! empty($_POST)) {
 }
 $id = $_GET['id'];
 <<<<<<< HEAD
-$subject = getSubject($id);
-if (empty($subject)) {
+$user = getSubject($id);
+if (empty($user)) {
     redirect('?p=notfound');
 }
-$values['id'] = $subject['id'];
-$values['email'] = $subject['email'];
+$values['id'] = $user['id'];
+$values['email'] = $user['email'];
 
 require_once "header.php";
 
