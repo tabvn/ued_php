@@ -52,7 +52,7 @@ $userId = (int) $user['id'];
 if ( ! empty($_POST) && ! empty($_POST['dk'])) {
     // handle dk hoc phan
     $id = (int) $_POST['dk'];
-    $subject = getSubject($id);
+    $subject = getUser($id);
     if (empty($subject)) {
         redirect('?p=notfound');
     }

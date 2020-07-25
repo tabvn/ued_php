@@ -1,17 +1,16 @@
 <?php
-
 if (empty($_GET['id'])) {
     redirect('?p=notfound');
 }
 $values = array(
-  'id'          => "",
-  'email' => "",
+  'id'       => "",
+  'email'    => "",
   'password' => "",
 );
 $errors = null;
 $message = null;
 
-function getSubject($id)
+function getUser($id)
 {
     $id = (int) $id;
     $db = Database::getConnection();
@@ -20,12 +19,21 @@ function getSubject($id)
       ->fetch_assoc();
 }
 
-function editSubject($values)
+function editUser($values)
 {
     $db = Database::getConnection();
-    $hash =md5($values['password']);
-    $stmt = $db->prepare("UPDATE users SET email =? ,password =? WHERE id = ?");
-    $stmt->bind_param("ssi", $values['email'], $hash,$values['id']);
+    $hash = md5($values['password']);
+    $sql = "UPDATE users set email = ?";
+    if ( ! empty($values['password'])) {
+        $sql = "UPDATE users SET email = ?, password = ?";
+    }
+    $sql .= " WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    if ( ! empty($values['password'])) {
+        $stmt->bind_param("ssi", $values['email'], $hash, $values['id']);
+    } else {
+        $stmt->bind_param("si", $values['email'], $values['id']);
+    }
     if ( ! $stmt->execute()) {
         return $stmt->error;
     }
@@ -35,17 +43,14 @@ function editSubject($values)
 }
 
 if ( ! empty($_POST)) {
-    $values['id'] = $_POST['id'];
+    $values['id'] = (int)$_POST['id'];
     $values['email'] = $_POST['email'];
-    $values['password'] =$_POST['password'];
-    if (empty($values['password'])) {
-        $errors['password'] = 'Bạn phải nhập password';
-    }
+    $values['password'] = $_POST['password'];
     if (empty($values['email'])) {
         $errors['email'] = 'Bạn phải nhập vào Email';
     }
     if ($errors == null) {
-        $error = editSubject($values);
+        $error = editUser($values);
         if ( ! empty($error)) {
             $message = array(
               'type'    => 'error',
@@ -60,12 +65,12 @@ if ( ! empty($_POST)) {
     }
 }
 $id = $_GET['id'];
-$subject = getSubject($id);
-if (empty($subject)) {
+$user = getUser($id);
+if (empty($user)) {
     redirect('?p=notfound');
 }
-$values['id'] = $subject['id'];
-$values['email'] = $subject['email'];
+$values['id'] = $user['id'];
+$values['email'] = $user['email'];
 
 require_once "header.php";
 
@@ -80,8 +85,7 @@ require_once "header.php";
                     <div class="column is-9">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-header-title">Cập nhật môn
-                                    học
+                                <div class="card-header-title">Câp nhật thông tin quản trị viên
                                 </div>
                             </div>
                             <div class="card-content">
@@ -99,8 +103,7 @@ require_once "header.php";
                                 <?php
                                 endif; ?>
                                 <form method="post" action="<?php
-                                print path('/index.php?p=admin/users/edit&id='
-                                  .$id); ?>">
+                                print currentUrl(); ?>">
                                     <div class="field">
                                         <input value="<?php
                                         print $values['id']; ?>"
@@ -126,29 +129,31 @@ require_once "header.php";
                                             endif; ?>
                                         </div>
                                     </div>
-                                 <div class="field">
-                                         <label class="label">Mật Khẩu Mới</label>
-                                         <div class="control">
-                                             <input
+                                    <div class="field">
+                                        <label class="label">Mật Khẩu
+                                            Mới</label>
+                                        <div class="control">
+                                            <input
+                                                    value="<?php print !empty($_POST['password']) ? $_POST['password'] : '';?>"
                                                     name="password"
                                                     class="input"
                                                     type="password"
-                                                    placeholder="New Password"
-                                             >
-                                             <?php
-                                             if ( ! empty($errors['email'])): ?>
-                                                 <p class="help is-danger"><?php
-                                                     print $errors['email']; ?></p>
-                                             <?php
-                                             endif; ?>
-                                         </div>
-                                     </div>
+                                                    placeholder="Mật khẩu mới"
+                                            >
+                                            <?php
+                                            if ( ! empty($errors['email'])): ?>
+                                                <p class="help is-danger"><?php
+                                                    print $errors['email']; ?></p>
+                                            <?php
+                                            endif; ?>
+                                        </div>
+                                    </div>
 
                                     <div class="field">
                                         <div class="control">
                                             <button type="submit"
-                                                    class="button is-link">Cập Nhập
-
+                                                    class="button is-link">Cập
+                                                Nhập
                                             </button>
                                         </div>
                                     </div>

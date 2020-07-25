@@ -38,7 +38,7 @@ if ( ! empty($_POST)) {
     $values['id'] = $_POST['id'];
 
     if ($errors == null) {
-        $error = editSubject($values);
+        $error = editUser($values);
         if ( ! empty($error)) {
             $message = array(
               'type'    => 'error',
@@ -53,7 +53,7 @@ if ( ! empty($_POST)) {
     }
 }
 $id = $_GET['id'];
-$subject = getSubject($id);
+$subject = getUser($id);
 if (empty($subject)) {
     redirect('?p=notfound');
 }
