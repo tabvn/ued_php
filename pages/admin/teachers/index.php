@@ -2,8 +2,23 @@
 $teachers = array();
 $message = null;
 $db = Database::getConnection();
-$stmt = $db->prepare("SELECT id, ho, ten, DATE_FORMAT(ngay_sinh, '%d/%m/%Y') ,email, dien_thoai FROM giang_vien ORDER BY id");
+// delete
+if(!empty($_POST) && !empty($_POST['delete_id'])){
+    $delete_id = $_POST['delete_id'];
+    $s = $db->prepare("DELETE FROM giang_vien WHERE id = ?");
+    $s->bind_param("i",$delete_id);
+    if ( ! $s->execute()) {
+        $message = array('type' => 'success', 'message' => 'Lỗi xảy ra: '.$s->error);
 
+    } else {
+        $message = array('type'    => 'success',
+                         'message' => 'Xoá thành công',
+        );
+    }
+    $s->close();
+}
+// get
+$stmt = $db->prepare("SELECT id, ho, ten, DATE_FORMAT(ngay_sinh, '%d/%m/%Y') AS ngay_sinh ,email, dien_thoai FROM giang_vien ORDER BY id");
 if (!$stmt->execute()) {
     $message = array('type' => 'error', 'message' => htmlspecialchars($stmt->error));
 } else {
@@ -41,6 +56,7 @@ require_once "header.php";
                                 <th>Ngày sinh</th>
                                 <th>Email</th>
                                 <th>Điện Thoại</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,6 +67,15 @@ require_once "header.php";
                                     <td><?php print $teacher['ngay_sinh'] ?></td>
                                     <td><?php print $teacher['email'] ?></td>
                                     <td><?php print $teacher['dien_thoai'] ?></td>
+                                    <td>
+                                        <div class="is-flex">
+                                            <button type="button" class="button is-text">Sửa</button>
+                                            <form id="form-<?php print $teacher['id']?>" action="<?php print currentUrl();?>" method="post">
+                                                <input name="delete_id" type="hidden" value="<?php print $teacher['id'];?>">
+                                                <button type="submit" class="button is-text">Xoá</button>
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>
