@@ -41,6 +41,9 @@
                 <?php print navLink('Học phần đang mở', '?p=admin/open-subjects', null);?>
             </li>
             <li>
+                <?php print navLink('Danh sách đã đăng ký', '?p=admin/open-subjects/registered', null);?>
+            </li>
+            <li>
                 <?php print navLink('Mở học phần mới', '?p=admin/open-subjects/create', null);?>
             </li>
         </ul>

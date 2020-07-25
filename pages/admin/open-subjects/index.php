@@ -63,8 +63,8 @@ require_once "header.php";
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Mã học phần</th>
-                                <th>Tên học phần</th>
+                                <th>Mã HP</th>
+                                <th>Tên HP</th>
                                 <th>Số tín chỉ</th>
                                 <th>Số lượng tối đa</th>
                                 <th>Giảng viên</th>
@@ -103,6 +103,7 @@ require_once "header.php";
                                     <td>
                                     <td>
                                         <div class="is-flex">
+                                            <a href="<?php print path('?p=admin/open-subjects/registered&id='.$subject['id'])?>" class="button is-text">DS đăng ký</a>
                                             <a href="<?php print path('?p=admin/open-subjects/edit&id='.$subject['id'])?>" class="button is-text">Sửa</a>
                                             <form id="form-<?php print $subject['id']?>" action="<?php print currentUrl();?>" method="post">
                                                 <input name="delete_id" type="hidden" value="<?php print $subject['id'];?>">

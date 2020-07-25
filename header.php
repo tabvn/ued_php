@@ -11,6 +11,7 @@ $user = getCurrentUser();
     print path("assets/css/main.css"); ?>">
     <link rel="stylesheet" href="<?php
     print path("assets/css/style.css"); ?>">
+    <script type="text/javascript" src="<?php print path("assets/js/main.js"); ?>"></script>
 </head>
 <body>
 <nav class="bd-navbar navbar has-shadow is-spaced" role="navigation"
