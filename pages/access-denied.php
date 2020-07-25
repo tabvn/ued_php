@@ -5,7 +5,7 @@
             <div class="columns">
                 <div class="column is-8-desktop is-offset-2-desktop">
                     <h1 class="title is-2 is-spaced">
-                        Access denied!
+                        Xin lỗi, bạn không được phép truy cập khu vực này
                     </h1>
                 </div>
             </div>
