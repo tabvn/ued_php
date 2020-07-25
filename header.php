@@ -1,17 +1,5 @@
 <?php
-
 $user = getCurrentUser();
-function navLink($title, $link)
-{
-    $class = "navbar-item";
-    $p = path($link);
-    if ($p == currentUrl()) {
-        $class .= " is-active";
-    }
-
-    return '<a class="'.$class.'" href="'.$p.'">'.$title.'</a>';
-}
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -49,19 +37,19 @@ function navLink($title, $link)
                     <?php
                     if ($user['role'] == 'student'): ?>
                         <?php
-                        print navLink("Đăng ký học phần", '?p=subjects') ?>
+                        print navLink("Đăng ký học phần", '?p=subjects', 'navbar-item') ?>
                         <?php
                         print navLink("Học phần đã đăng ký",
-                          '?p=my-subjects') ?>
+                          '?p=my-subjects', 'navbar-item') ?>
                     <?php
                     endif; ?>
                     <?php
                     if ($user['role'] == 'admin'): ?>
-                        <?php print navLink("Giảng viên", '?p=admin/teachers') ?>
-                        <?php print navLink("Sinh viên", '?p=admin/students') ?>
-                        <?php print navLink("Môn học", '?p=admin/subjects') ?>
-                        <?php print navLink("Học phần đang mở", '?p=admin/open-subjects') ?>
-                        <?php print navLink("Quản trị viên", '?p=admin/users') ?>
+                        <?php print navLink("Giảng viên", '?p=admin/teachers', 'navbar-item') ?>
+                        <?php print navLink("Sinh viên", '?p=admin/students', 'navbar-item') ?>
+                        <?php print navLink("Môn học", '?p=admin/subjects', 'navbar-item') ?>
+                        <?php print navLink("Học phần đang mở", '?p=admin/open-subjects', 'navbar-item') ?>
+                        <?php print navLink("Quản trị viên", '?p=admin/users', 'navbar-item') ?>
                     <?php
                     endif; ?>
                 </div>
