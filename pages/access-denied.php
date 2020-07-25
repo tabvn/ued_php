@@ -5,8 +5,11 @@
             <div class="columns">
                 <div class="column is-8-desktop is-offset-2-desktop">
                     <h1 class="title is-2 is-spaced">
-                        Xin lỗi, bạn không được phép truy cập khu vực này
+                        Access Denied!
                     </h1>
+                    <h2 class="subtitle">
+                        Xin lỗi, bạn không được phép truy cập khu vực này.
+                    </h2>
                 </div>
             </div>
         </div>

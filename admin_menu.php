@@ -1,5 +1,3 @@
-<?php
-?>
 <div class="column">
     <aside class="menu">
         <p class="menu-label">
