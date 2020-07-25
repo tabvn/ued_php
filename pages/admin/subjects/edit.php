@@ -42,7 +42,7 @@ if ( ! empty($_POST)) {
         $errors['ten_mon_hoc'] = 'Bạn phải nhập vào Tên môn học';
     }
     if ($errors == null) {
-        $error = editUser($values);
+        $error = editSubject($values);
         if ( ! empty($error)) {
             $message = array(
               'type'    => 'error',
@@ -57,7 +57,7 @@ if ( ! empty($_POST)) {
     }
 }
 $id = $_GET['id'];
-$subject = getUser($id);
+$subject = getSubject($id);
 if (empty($subject)) {
     redirect('?p=notfound');
 }
