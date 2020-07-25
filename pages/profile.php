@@ -1,5 +1,9 @@
 <?php
-$values = array('email' => "", 'password' => '');
+$user = getCurrentUser();
+if (empty($user)) {
+    redirect('?p=access-denied');
+}
+$values = array('email' => $user['email'], 'password' => '');
 $errors = null;
 $message = null;
 if ( ! empty($_POST)) {
@@ -13,47 +17,34 @@ if ( ! empty($_POST)) {
     ) {
         $errors['email'] = "Địa chỉ email không hợp lệ";
     }
-    if (empty($values['password'])) {
-        $errors['password'] = "Mật khẩu là bắt buộc";
-    }
     if ($errors == null) {
         // handle create user
+        $id = (int) $user['id'];
         $db = Database::getConnection();
-        $stmt
-          = $db->prepare("SELECT id, email, password,role FROM users where email =? AND password =?");
-        $hash = md5($values['password']);
-        $stmt->bind_param("ss", $values['email'], $hash);
-        if ( ! $stmt->execute()) {
-            $message = array(
-              'type' => 'error', 'message' => htmlspecialchars($stmt->error),
-            );
-        } else {
-            $stmt->store_result();
-            if ($stmt->num_rows > 0) {
-                $id = null;
-                $email = null;
-                $password = null;
-                $role = null;
-                $stmt->bind_result($id, $email, $password, $role);
-                $result = $stmt->get_result();
-                $stmt->fetch();
-                $_SESSION['user'] = array(
-                  'id' => $id, 'email' => $email, 'role' => $role,
-                );
-                $message = array(
-                  'type' => 'success', 'message' => 'Đăng nhập thành công!',
-                );
-                redirect('');
-                // login success
-                // create session
-            } else {
-                $message = array(
-                  'type' => 'error',
-                  "message" => 'Email hoặc mật khẩu không chính xác!',
-                );
-            }
+        $sql = "UPDATE users set email =?";
+        if ( ! empty($values['password'])) {
+            $sql = "UPDATE users set email = ?, password = ?";
         }
-        $stmt->close();
+        $sql .= " WHERE id = ?";
+        $q = $db->prepare($sql);
+        if ( ! empty($values['password'])) {
+            $password = md5($values['password']);
+            $q->bind_param("ssi", $values['email'], $password, $id);
+        } else {
+            $q->bind_param("si", $values['email'], $id);
+        }
+        if ($q->execute()) {
+            $message = array('type'    => 'success',
+                             'message' => 'Cập nhật thông tin thành công!',
+            );
+            $user['email'] = $values['email'];
+            $_SESSION['user'] = $user;
+        } else {
+            $message = array('type'    => 'success',
+                             'message' => 'Lỗi xảy ra: '.$q->error,
+            );
+        }
+        $q->close();
     }
 }
 require_once "header.php"
@@ -64,7 +55,7 @@ require_once "header.php"
             <div class="column is-half">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-header-title">Đăng nhập tài khoản</div>
+                        <div class="card-header-title">Cập nhật thông tin</div>
                     </div>
                     <div class="card-content">
                         <?php
@@ -81,7 +72,7 @@ require_once "header.php"
                         <?php
                         endif; ?>
                         <form method="post" action="<?php
-                        print path('?p=login'); ?>">
+                        print currentUrl(); ?>">
                             <div class="field">
                                 <label class="label">Email</label>
                                 <div class="control">
@@ -102,7 +93,7 @@ require_once "header.php"
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label">Mật khẩu</label>
+                                <label class="label">Đổi mật khẩu</label>
                                 <div class="control">
                                     <input name="password"
                                            class="input <?php
@@ -124,7 +115,7 @@ require_once "header.php"
                             <div class="field">
                                 <div class="control">
                                     <button type="submit"
-                                            class="button is-link">Đăng nhập
+                                            class="button is-link">Lưu thông tin
                                     </button>
                                 </div>
                             </div>
