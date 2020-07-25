@@ -86,6 +86,10 @@ function navLink($title, $link)
                             </a>
                         <?php
                         else: ?>
+                            <a class="button is-white" href="<?php
+                            print path("/?p=profile") ?>">
+                                Thông tin cá nhân
+                            </a>
                             <a class="button is-light" href="<?php
                             print path("/?p=logout") ?>">
                                 Thoát
