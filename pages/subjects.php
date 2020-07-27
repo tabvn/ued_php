@@ -1,5 +1,4 @@
 <?php
-
 function getSubject($id)
 {
     $id = (int) $id;
@@ -118,6 +117,7 @@ if ( ! $stmt->execute()) {
 $stmt->close();
 ?>
 <?php
+
 require_once "header.php"; ?>
 <div id="content">
     <div class="container">
@@ -191,7 +191,7 @@ require_once "header.php"; ?>
                             </td>
                             <td>
                                 <?php
-                                if (empty($row['dk_user_id'])): ?>
+                                if (($row['dk_user_id'] == NULL ) || empty($row['dk_user_id'])): ?>
                                     <form method="post" action="<?php
                                     print path('?p=subjects') ?>"
                                           id="form-dk-<?php
@@ -201,8 +201,7 @@ require_once "header.php"; ?>
                                                print $row['id'] ?>">
                                         <button type="submit">Đăng ký</button>
                                     </form>
-                                <?
-                                else : ?>
+                                <?php else : ?>
                                     <form method="post" action="<?php
                                     print path('?p=subjects') ?>"
                                           id="form-dk-<?php
@@ -217,8 +216,7 @@ require_once "header.php"; ?>
                                 endif; ?>
                             </td>
                         </tr>
-                    <?php
-                    endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

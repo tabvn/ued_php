@@ -32,3 +32,8 @@
     border-radius: 50%;
     vertical-align: middle;
 }
+@media screen and (min-width: 991px) {
+    .hero.is-medium .hero-body{
+        padding: 5rem 1.5rem;
+    }
+}
