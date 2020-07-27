@@ -111,15 +111,15 @@ require_once "header.php";
                         <?php
                         if ( ! empty($hp)): ?>
                             <div class="box">
-                                <p>Tên học phần: <span class="is-light"><?
+                                <p>Tên học phần: <span class="is-light"><?php
                                         print $hp['ten_hoc_phan']; ?></span></p>
-                                <p>Mã học phần: <span class="is-light"><?
+                                <p>Mã học phần: <span class="is-light"><?php
                                         print $hp['ma_hoc_phan']; ?></span></p>
-                                <p>Giảng viên: <span class="is-light"><?
+                                <p>Giảng viên: <span class="is-light"><?php
                                         print $hp['ho'].' '
                                           .$hp['ten']; ?></span>
                                 </p>
-                                <p>Số lượng đăng ký: <span class="is-light"><?
+                                <p>Số lượng đăng ký: <span class="is-light"><?php
                                         print getTotal($hp_id); ?>/<?php print $hp['so_luong_toi_da']?></span></p>
                             </div>
                             <table class="table">
