@@ -103,8 +103,7 @@ require_once "header.php"; ?>
                                 </td>
                                 <td>
                                     <?php
-                                    print $row['ten_giang_vien'].' '
-                                      .$row['ho_giang_vien']; ?>
+                                    print $row['ho_giang_vien'].' ' .$row['ten_giang_vien']; ?>
                                 </td>
                                 <td>
                                     <?php

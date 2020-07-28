@@ -19,7 +19,7 @@ if(!empty($_POST) && !empty($_POST['delete_id'])){
 }
 // GET
 $stmt = $db->prepare(
-  "SELECT hp.id, ten_hoc_phan, ma_hoc_phan, so_tin_chi, giang_vien_id, mon_hoc_id, so_luong_toi_da,thu,tiet_bat_dau, tiet_ket_thuc, gv.ho,gv.ten, mh.ten_mon_hoc FROM hoc_phan AS hp INNER JOIN giang_vien as gv ON gv.id = hp.giang_vien_id INNER JOIN mon_hoc as mh ON mh.id = hp.mon_hoc_id ORDER BY id DESC"
+  "SELECT hp.id, ten_hoc_phan, ma_hoc_phan, so_tin_chi, giang_vien_id, mon_hoc_id, so_luong_toi_da,thu,tiet_bat_dau, tiet_ket_thuc, gv.ho,gv.ten, mh.ten_mon_hoc FROM hoc_phan AS hp INNER JOIN giang_vien as gv ON gv.id = hp.giang_vien_id INNER JOIN mon_hoc as mh ON mh.id = hp.mon_hoc_id ORDER BY id ASC"
 );
 if ( ! $stmt->execute()) {
     $message = array(

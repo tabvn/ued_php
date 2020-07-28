@@ -108,6 +108,8 @@ require_once "header.php"
                                     if ( ! empty($errors['password'])): ?>
                                         <p class="help is-danger"><?php
                                             print $errors['password']; ?></p>
+                                    <?php else: ?>
+                                        <p class="help">Nhập vào mật khẩu mới nếu bạn muốn đổi.</p>
                                     <?php
                                     endif; ?>
                                 </div>

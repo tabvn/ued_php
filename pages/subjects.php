@@ -185,9 +185,7 @@ require_once "header.php"; ?>
                                 print $row['so_luong_toi_da']; ?>
                             </td>
                             <td>
-                                <?php
-                                print $row['ten_giang_vien'].' '
-                                  .$row['ho_giang_vien']; ?>
+                                <?php print $row['ho_giang_vien'].' ' .$row['ten_giang_vien']; ?>
                             </td>
                             <td>
                                 <?php
@@ -199,7 +197,7 @@ require_once "header.php"; ?>
                                         <input name="dk" type="hidden"
                                                value="<?php
                                                print $row['id'] ?>">
-                                        <button type="submit">Đăng ký</button>
+                                        <button class="button is-primary is-small" type="submit">Đăng ký</button>
                                     </form>
                                 <?php else : ?>
                                     <form method="post" action="<?php
@@ -209,7 +207,7 @@ require_once "header.php"; ?>
                                         <input name="huy_dk" type="hidden"
                                                value="<?php
                                                print $row['id'] ?>">
-                                        <button type="submit">Huỷ đăng ký
+                                        <button class="button is-danger is-small" type="submit">Huỷ đăng ký
                                         </button>
                                     </form>
                                 <?php
