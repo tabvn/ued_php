@@ -44,6 +44,7 @@ require_once "header.php";
                 <div class="card">
                     <div class="card-header">
                         <div class="card-header-title">Học phần đang mở</div>
+                        <a href="<?php print path('?p=admin/open-subjects/create');?>"><button class="button is-small is-primary">Mở học phần mới</button></a>
                     </div>
                     <div class="card-content">
                         <?php

@@ -37,3 +37,7 @@
         padding: 5rem 1.5rem;
     }
 }
+
+.card .card-header a{
+    margin: 10px;
+}
