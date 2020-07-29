@@ -45,6 +45,7 @@ require_once "header.php";
                 <div class="card">
                     <div class="card-header">
                         <div class="card-header-title">Danh sách giảng viên</div>
+                        <a href="<?php print path('?p=admin/teachers/create');?>"><button class="button is-small is-primary">Thêm giảng viên</button></a>
                     </div>
                     <div class="card-content">
                         <?php
